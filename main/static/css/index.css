@@ -1,0 +1,291 @@
+body{
+    background-color: rgb(39, 36, 36);
+    display: block;
+}
+
+.container{
+    width: 800px;
+    height: 600px;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: aliceblue;
+}
+
+.container2{
+    width: 800px;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: aliceblue;
+}
+
+.container-darken{
+    width: 800px;
+    height: 600px;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: aliceblue;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+#pytanie{
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    width: 100%;
+    height: 33%;
+    
+}
+
+#odpowiedz{
+    background-color: blueviolet;
+    text-align: center;
+    padding: 40px;
+}
+
+#wprowadz{
+    width: 500px;
+    height: 33%;
+    font-size: 40px;
+
+}
+
+#butt-next{
+    height: 106px;
+    width: 40px;
+    background-color: black;
+    vertical-align: top;
+    color: white;
+    padding: 0px;
+    margin: 0px;
+}
+
+#podpowiedzi{
+    width: 100%;
+    height: 34%;
+    background-color: coral;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.butt-podp{
+    width: 400px;
+    height: 100px;
+    margin: 20px;
+}
+
+#podpowiedz{
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    width: 100%;
+    height: 50px;
+    
+}
+
+#okno{
+    height: 20%;
+    width:  33%;
+    background-color: rgb(54, 54, 46);
+    position: absolute;
+    left:33%;
+    top:40%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+#czy_na_pewno{
+    font-size: 30px;
+}
+
+#przyciski_tak_nie{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#butt-potw-tak{
+    width: 50px;
+    height: 40px;
+    margin: 5px;
+    color: black;
+    font-size: 15px;
+}
+
+#butt-potw-nie{
+    width: 50px;
+    height: 40px;
+    margin: 5px;
+    color: black;
+    font-size: 15px;
+}
+
+#logowanie{
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    width: 100%;
+    height: 100%;
+}
+
+#administracja{
+    display: flex;
+    flex-direction: column;
+    background-color: blueviolet;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    width: 100%;
+    height: 50%;
+    padding-bottom: 100px;
+    padding-top: 100px;
+}
+
+#wgrywanie{
+    display: flex;
+    flex-direction: column;
+    background-color: blueviolet;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    width: 100%;
+    height: 70%;
+}
+
+#start-header{
+    width: 100%;
+    height: 20%;
+    background-color: brown;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#start-panel{
+    width: 100%;
+    height: 80%;
+    background-color: rgb(87, 79, 79);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#header-img{
+    width: 600px;
+    height: 100px;
+}
+
+#butt-rozpocznij{
+    width: 300px;
+    height: 100px;
+    border-radius: 20px;
+}
+
+#kod-zagadki{
+    width: 300px;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+
+#zagadki{
+    display: flex;
+    flex-direction: column;
+    background-color: blueviolet;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    width: 100%;
+    height: 70%;
+}
+
+.zagadka{
+    width: 70%;
+    background-color: cadetblue;
+    margin: 15px;
+    font-size: 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 7px;
+    border: solid rgb(56, 84, 85) 3px;
+}
+
+.zagadka-content{
+    width: 80%;
+}
+
+.zagadka-icons{
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.icon:hover{
+    transform: scale(1.5);
+    transition: 0.5s;
+    cursor: pointer
+}
+
+hr{
+    width: 100%;
+    height: 10px;
+
+    background-color: rgb(39, 36, 36);
+    border: none;
+}
+
+#utworz-zagadke{
+    width: 70%;
+    background-color: cadetblue;
+    margin: 15px;
+    font-size: 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 7px;
+    border: solid rgb(56, 84, 85) 3px;
+}
+
+#icon-minus{
+    width: 30px;
+    height: 30px;
+}
+
+.icon{
+    width: 40px;
+    height: 40px;
+}
+
+.edit-form-hidden{
+    display: none;
+}
+
+.edit-form{
+    display: block;
+}
+
+#edit-info-par{
+    color:purple
+}
