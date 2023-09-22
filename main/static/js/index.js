@@ -1,6 +1,13 @@
 let odpowiedz, odp1, odp2, koniec
 async function pobierz_zagadke(){
-    await fetch('pobierz_zagadke').then(result => result.json()).then(data => {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    let data = { up : 10 }
+    await fetch('pobierz_zagadke/', {
+        method : "POST", 
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+        body : JSON.stringify(data)
+    }).then(result => result.json()).then(data => {
         document.querySelector('#pytanie').innerHTML = data.tresc
         odpowiedz = data.odpowiedz
         odp1 = data.podp1
@@ -107,7 +114,7 @@ async function pobierz_zagadke(){
             document.querySelector('#nastep-zagad').addEventListener('click', () => {
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                 let data = { up : 1 } // 1 - zwiekszenie o 1 numeru zagadki
-                fetch('increment/', {
+                fetch('pobierz_zagadke/', {
                     method : "POST", 
                     headers: {'X-CSRFToken': csrftoken},
                     mode: 'same-origin',
@@ -128,8 +135,8 @@ async function pobierz_zagadke(){
             `
             document.querySelector('#od-nowa').addEventListener('click', () => {
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                let data = { up : 2 } // 2 - rozpoczecie od poczatku
-                fetch('increment/', {
+                let data = { up : "restart" } // 2 - rozpoczecie od poczatku
+                fetch('pobierz_zagadke/', {
                     method : "POST", 
                     headers: {'X-CSRFToken': csrftoken},
                     mode: 'same-origin',
@@ -141,8 +148,8 @@ async function pobierz_zagadke(){
 
             document.querySelector('#butt-jeszcze-raz').addEventListener('click', () => {
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                let data = { up : 0 } // 0 - zmniejszenie o 1 numeru zagadki
-                fetch('increment/', {
+                let data = { up : 0 } // 0 - ostatnia zagadka
+                fetch('pobierz_zagadke/', {
                     method : "POST", 
                     headers: {'X-CSRFToken': csrftoken},
                     mode: 'same-origin',

@@ -449,3 +449,14 @@ for (button of remove_buttons){
         })  
     })
 }
+
+
+/// PRZYCISK WYLOGUJ
+
+document.querySelector('#butt-wylog').addEventListener('click', () => {
+    fetch('/logout/').then(response => response.json()).then(data => {
+        if(data.odpowiedz == "wylogowano"){
+            location.replace('/')
+        }
+    });
+})

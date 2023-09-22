@@ -13,9 +13,14 @@ import json
 
 class Main_view(CreateView):
     def get(self, request, *args, **kwargs):
-        print(request.session['id_zagadki'])
+
+        #print(request.session['id_zagadki'])
         if('id_zagadki' not in request.session ):
             request.session['id_zagadki'] = 0
+            plik = Plik_graf_tyt.objects.first()
+            plik2 = Plik_rozpocznij.objects.first()
+            plik3 = Plik_submit.objects.first()
+            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3})
 
         elif(request.session['id_zagadki'] == 0):
             plik = Plik_graf_tyt.objects.first()
@@ -31,19 +36,83 @@ class Main_view(CreateView):
         
 
 class Pobierz_zagadke(CreateView):
-    def get(self, request, *args, **kwargs):
-        try:
-            zagadka = Zagadka.objects.get(id=request.session['id_zagadki'])
-        except:
-            context = {
-                "tresc" : "Ukończyłeś/aś wszystkie zagadki",
-                "odpowiedz" : "brak",
-                "podp1" : "brak",
-                "podp2" : "brak",
-                "koniec": True
-            }
-            return JsonResponse(context)
+    #def get(self, request, *args, **kwargs):
+
+        
+    
+    def post(self, request, *args, **kwargs):
+
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        up = body['up']
+
+        print(up)
+
+        if(up == 1):
+            try:
+                zagadka = Zagadka.objects.filter(id__gt=request.session['id_zagadki']).order_by('id').first()
+                request.session['id_zagadki'] = zagadka.id
+                request.session.modified = True
+            except Exception as e:
+                print(e)
+                request.session['id_zagadki'] = -1
+                context = {
+                    "tresc" : "Ukończyłeś/aś wszystkie zagadki",
+                    "odpowiedz" : "brak",
+                    "podp1" : "brak",
+                    "podp2" : "brak",
+                    "koniec": True
+                }
+                return JsonResponse(context)
+        elif(up == 0):
+            try:
+                zagadka = Zagadka.objects.last()
+                request.session['id_zagadki'] = zagadka.id
+                request.session.modified = True
+            except Exception as e:
+                print(e)
+                context = {
+                    "tresc" : "Ukończyłeś/aś wszystkie zagadki",
+                    "odpowiedz" : "brak",
+                    "podp1" : "brak",
+                    "podp2" : "brak",
+                    "koniec": True
+                }
+                return JsonResponse(context)
+        elif(up == "restart"):
+            request.session['id_zagadki'] = 0
+            request.session.modified = True
+            return HttpResponse(status = 200)
+        elif(up == "first"):
+            try:
+                zagadka = Zagadka.objects.first()
+                request.session['id_zagadki'] = zagadka.id
+            except:
+                request.session['id_zagadki'] = -1
+                context = {
+                    "tresc" : "Ukończyłeś/aś wszystkie zagadki",
+                    "odpowiedz" : "brak",
+                    "podp1" : "brak",
+                    "podp2" : "brak",
+                    "koniec": True
+                }
+                return JsonResponse(context)
+        else:
+            try:
+                zagadka = Zagadka.objects.get(id=request.session['id_zagadki'])
+            except:
+                request.session['id_zagadki'] = -1
+                context = {
+                    "tresc" : "Ukończyłeś/aś wszystkie zagadki",
+                    "odpowiedz" : "brak",
+                    "podp1" : "brak",
+                    "podp2" : "brak",
+                    "koniec": True
+                }
+                return JsonResponse(context)
+        
         tresc = zagadka.tresc
+        print(tresc)
         odpowiedz = zagadka.odpowiedz
         podp1 = zagadka.podp1
         podp2 = zagadka.podp2
@@ -56,8 +125,8 @@ class Pobierz_zagadke(CreateView):
             "koniec": False
         }
         return JsonResponse(context)
-    
-    def post(self, request, *args, **kwargs):
+
+
         if(request.user.is_authenticated):
             tresc = request.POST['pole-tresc']
             odpowiedz = request.POST['pole-odpowiedz']
@@ -99,28 +168,29 @@ class Usun_zagadke(CreateView):
             id = request.POST['pole-id']
             zagadka = Zagadka.objects.get(id=id)
             zagadka.delete()
+            Zagadka.objects.raw("DBCC CHECKIDENT('main_zagadka', RESEED, 0)")
             return JsonResponse({'odpowiedz' : 'Usunięto pomyślnie'})
         return JsonResponse({'odpowiedz' : 'Nie udało się usunąć!'})
 
-class Zaktualizuj_numer(CreateView):
-    def post(self, request, *args, **kwargs):
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
-        up = body['up']
+#class Zaktualizuj_numer(CreateView):
+#    def post(self, request, *args, **kwargs):
+#        body_unicode = request.body.decode('utf-8')
+#        body = json.loads(body_unicode)
+#        up = body['up']
         
 
-        if(up == 1):
-            request.session['id_zagadki'] += 1
-            request.session.modified = True
-        elif(up == 0):
-            request.session['id_zagadki'] -= 1
-            request.session.modified = True
-        else:
-            request.session['id_zagadki'] = 0
-            request.session.modified = True
+#        if(up == 1):
+#            request.session['id_zagadki'] += 1
+#            request.session.modified = True
+#        elif(up == 0):
+#            request.session['id_zagadki'] -= 1
+#            request.session.modified = True
+#        else:
+#            request.session['id_zagadki'] = 0
+#            request.session.modified = True
 
-        print(request.session['id_zagadki'])
-        return HttpResponse(status = 200)
+#        print(request.session['id_zagadki'])
+#        return HttpResponse(status = 200)
     
 class Administracja(CreateView):
     def get(self, request, *args, **kwargs):
@@ -147,7 +217,8 @@ class Logowanie(CreateView):
         
         if user is not None:
             login(request, user)
-            return redirect('/administracja/')
+            context = { "odpowiedz" : "zalogowano" }
+            return JsonResponse(context)
         else:
             context = { "odpowiedz" : "nie udało się zalogować" }
         
@@ -158,7 +229,8 @@ class Logout (CreateView):
     def get(self, request, *args, **kwargs):
         if(request.user.is_authenticated):
             logout(request)
-            return redirect('/')
+            context = {"odpowiedz" : "wylogowano"}
+            return JsonResponse(context)
         else:
             return redirect('/')
         

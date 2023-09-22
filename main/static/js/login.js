@@ -12,6 +12,10 @@ document.querySelector('#butt-zaloguj').addEventListener('click', () => {
                 headers: {'X-CSRFToken': csrftoken},
                 mode: 'same-origin',
                 body : JSON.stringify(data)
+                }).then(response => response.json()).then(data => {
+                    if(data.odpowiedz == 'zalogowano'){
+                        location.replace('/administracja/')
+                    }
                 })
     }
     zaloguj()
