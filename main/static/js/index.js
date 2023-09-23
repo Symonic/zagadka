@@ -135,7 +135,7 @@ async function pobierz_zagadke(){
             `
             document.querySelector('#od-nowa').addEventListener('click', () => {
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                let data = { up : "restart" } // 2 - rozpoczecie od poczatku
+                let data = { up : "restart" } // restart - rozpoczecie od poczatku
                 fetch('pobierz_zagadke/', {
                     method : "POST", 
                     headers: {'X-CSRFToken': csrftoken},

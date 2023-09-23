@@ -280,6 +280,7 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     form.append(pole_kluczWy);
     form.append(pole_grafika);
     
+    
     nowa_zagadka.appendChild(form);
     nowa_zagadka.appendChild(submit);
 
@@ -287,11 +288,12 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     document.querySelector('#form-submit').addEventListener('click', () => {
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         const data = new FormData(form);
-            fetch('/pobierz_zagadke/', {
+        
+            fetch('/pobierz_zagadke/utworz', {
             method: "POST",
             headers: {'X-CSRFToken': csrftoken},
             body: data
-        })
+        }).then(response => location.reload())
     })
 
     let plus = document.querySelector('#nowa-zag-butt');
@@ -392,6 +394,7 @@ for(button of edit_buttons){
                     paragraph.setAttribute('id', 'edit-info-par')
                     paragraph.innerText = `${data.odpowiedz}`
                     child.append(paragraph);
+                    location.reload()
                 })
                 
             })
@@ -445,7 +448,7 @@ for (button of remove_buttons){
                 method: "POST",
                 headers: {'X-CSRFToken': csrftoken},
                 body: data
-            })
+            }).then(response => location.reload())
         })  
     })
 }

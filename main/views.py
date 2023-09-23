@@ -17,21 +17,21 @@ class Main_view(CreateView):
         #print(request.session['id_zagadki'])
         if('id_zagadki' not in request.session ):
             request.session['id_zagadki'] = 0
-            plik = Plik_graf_tyt.objects.first()
-            plik2 = Plik_rozpocznij.objects.first()
-            plik3 = Plik_submit.objects.first()
+            plik = Plik_graf_tyt.objects.last()
+            plik2 = Plik_rozpocznij.objects.last()
+            plik3 = Plik_submit.objects.last()
             return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3})
 
         elif(request.session['id_zagadki'] == 0):
-            plik = Plik_graf_tyt.objects.first()
-            plik2 = Plik_rozpocznij.objects.first()
-            plik3 = Plik_submit.objects.first()
+            plik = Plik_graf_tyt.objects.last()
+            plik2 = Plik_rozpocznij.objects.last()
+            plik3 = Plik_submit.objects.last()
             return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3})
         
         else:
-            plik = Plik_podp1.objects.first()
-            plik2 = Plik_podp2.objects.first()
-            plik3 = Plik_submit.objects.first()
+            plik = Plik_podp1.objects.last()
+            plik2 = Plik_podp2.objects.last()
+            plik3 = Plik_submit.objects.last()
             return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3})
         
 
@@ -44,6 +44,7 @@ class Pobierz_zagadke(CreateView):
 
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
+        print(body)
         up = body['up']
 
         print(up)
@@ -126,22 +127,23 @@ class Pobierz_zagadke(CreateView):
         }
         return JsonResponse(context)
 
-
+class Utworz_zagadke(CreateView):
+    def post(self, request, *args, **kwargs):
         if(request.user.is_authenticated):
-            tresc = request.POST['pole-tresc']
-            odpowiedz = request.POST['pole-odpowiedz']
-            podp1 = request.POST['pole-podp1']
-            podp2 = request.POST['pole-podp2']
-            kl_wej = request.POST['pole-kluczWe']
-            kl_wyj = request.POST['pole-kluczWy']
-            grafika = request.FILES['pole-grafika']
+                tresc = request.POST['pole-tresc']
+                odpowiedz = request.POST['pole-odpowiedz']
+                podp1 = request.POST['pole-podp1']
+                podp2 = request.POST['pole-podp2']
+                kl_wej = request.POST['pole-kluczWe']
+                kl_wyj = request.POST['pole-kluczWy']
+                grafika = request.FILES['pole-grafika']
 
-            zagadka = Zagadka(tresc = tresc, odpowiedz = odpowiedz, podp1 = podp1,
+                zagadka = Zagadka(tresc = tresc, odpowiedz = odpowiedz, podp1 = podp1,
                                podp2 = podp2, klucz_wejsciowy = kl_wej, klucz_wynikowy = kl_wyj, grafika = grafika)
-            zagadka.save()
+                zagadka.save()
 
         
-            return HttpResponse(status=200)
+                return HttpResponse(status=200)
 
 class Edytuj_zagadke(CreateView):
     def post(self, request, *args, **kwargs):
