@@ -1,4 +1,4 @@
-let odpowiedz, odp1, odp2, koniec
+let odpowiedz, odp1, odp2, koniec, kl_wej, kl_wyj
 async function pobierz_zagadke(){
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     let data = { up : 10 }
@@ -8,11 +8,16 @@ async function pobierz_zagadke(){
         mode: 'same-origin',
         body : JSON.stringify(data)
     }).then(result => result.json()).then(data => {
-        document.querySelector('#pytanie').innerHTML = data.tresc
+        document.querySelector('#pytanie').innerHTML = `
+        <img src="/media/${data.grafika}" /><br />
+        ${data.tresc}
+        `
         odpowiedz = data.odpowiedz
         odp1 = data.podp1
         odp2 = data.podp2
         koniec = data.koniec
+        kl_wej = data.klucz_wejsciowy
+        kl_wyj = data.klucz_wynikowy
     })
     ukonczenie()
 }
@@ -96,13 +101,17 @@ async function pobierz_zagadke(){
     // OBSŁUGA PRZYCISKU DALEJ
     document.querySelector('#butt-next').addEventListener('click', () => {
         let wartosc = document.querySelector("#wprowadz").value;
+        console.log(kl_wyj);
         if (wartosc == odpowiedz){
             console.log("Poprawna odpowiedz");
             document.querySelector('#odpowiedz').innerHTML = `
-                <p>Gratulacje! Poprawna odpowiedź</p>
-                </p>Czy chcesz przejść do następnej zagadki?</p>
-                <button id="nastep-zagad">Tak</button>
+                <p>Poprawna odpowiedź! Kod do następnej zagadki to: ${kl_wyj}</p>
+                <input type="text" placeholder="podaj kod kolejnej zagadki" id="kod-zagadki">
+                <button id="nastep-zagad">Przejdź</button>
+                <br />
                 <button id="butt-jeszcze-raz">Rozwiąż jeszcze raz</button>
+                <button id="butt-przejdz-start">Przejdz do strony głównej</button>
+                <div id="server-info"></div>
             `
 
             // OBSŁUGA PRZYCISKU JESZCZE RAZ
@@ -112,17 +121,39 @@ async function pobierz_zagadke(){
 
             // OBSŁUGA PRZYCISKU NASTEP-ZAGAD
             document.querySelector('#nastep-zagad').addEventListener('click', () => {
+                const klucz_wejsciowy = document.querySelector('#kod-zagadki').value;
+
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                let data = { up : 1 } // 1 - zwiekszenie o 1 numeru zagadki
+                let data = { up : klucz_wejsciowy } 
+
                 fetch('pobierz_zagadke/', {
                     method : "POST", 
                     headers: {'X-CSRFToken': csrftoken},
                     mode: 'same-origin',
                     body : JSON.stringify(data)
-                }).then(response => {
-                    location.reload()
-                })
+                }).then(response => response.json()).then(data => {
+                    if(data.serverresp == "niepowodzenie"){
+                        document.querySelector('#server-info').innerHTML = `
+                        <p>Nie udało się znaleźć zagadki o podanym kodzie!</p>
+                        `
+                    }
+                    else{
+                        location.reload();
+                    }
+                })   
                 
+            })
+
+            document.querySelector('#butt-przejdz-start').addEventListener('click', () => {
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                let data = { up : "restart" }
+                
+                fetch('pobierz_zagadke/', {
+                    method : "POST", 
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
+                    body : JSON.stringify(data)
+                }).then(response => location.reload())
             })
         }
     })

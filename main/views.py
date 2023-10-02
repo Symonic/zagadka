@@ -98,7 +98,7 @@ class Pobierz_zagadke(CreateView):
                     "koniec": True
                 }
                 return JsonResponse(context)
-        else:
+        elif(up == 10):
             try:
                 zagadka = Zagadka.objects.get(id=request.session['id_zagadki'])
             except:
@@ -111,19 +111,33 @@ class Pobierz_zagadke(CreateView):
                     "koniec": True
                 }
                 return JsonResponse(context)
-        
+        else:
+            try:
+                zagadka = Zagadka.objects.get(klucz_wejsciowy = up)
+                request.session['id_zagadki'] = zagadka.id
+            except:
+                context = {
+                    "serverresp" : "niepowodzenie",
+                }
+                return JsonResponse(context)
         tresc = zagadka.tresc
         print(tresc)
         odpowiedz = zagadka.odpowiedz
         podp1 = zagadka.podp1
         podp2 = zagadka.podp2
+        kl_wyn = zagadka.klucz_wynikowy
+        grafika = str(zagadka.grafika)
+        print(grafika)
 
         context = {
             "tresc" : tresc,
             "odpowiedz" : odpowiedz,
             "podp1" : podp1,
             "podp2" : podp2,
-            "koniec": False
+            "koniec": False,
+            "serverresp" : "powodzenie",
+            "klucz_wynikowy" : kl_wyn,
+            "grafika" : grafika
         }
         return JsonResponse(context)
 
