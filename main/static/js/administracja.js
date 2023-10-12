@@ -22,7 +22,7 @@ fileinput.addEventListener('change', () => {
         
         if(height > 100 || width > 400){
             
-            document.querySelector("#plik-info").innerHTML = `Niepoprawny wymiar pliku (400x100)`
+            alert(`Niepoprawny wymiar pliku \nmax. wys: 100px\nmax. szer: 400px`);
             fileinput.value = '';
             file = ''
         }
@@ -46,7 +46,7 @@ fileinput2.addEventListener('change', () => {
         
         if(height > 100 || width > 400){
             
-            document.querySelector("#plik-info").innerHTML = `Niepoprawny wymiar pliku (400x100)`
+            alert(`Niepoprawny wymiar pliku \nmax. wys: 100px\nmax. szer: 400px`);
             fileinput2.value = '';
             file2 = ''
         }
@@ -70,7 +70,7 @@ fileinput3.addEventListener('change', () => {
         
         if(height > 106 || width > 40){
             
-            document.querySelector("#plik-info").innerHTML = `Niepoprawny wymiar pliku (40x106)`
+            alert(`Niepoprawny wymiar pliku \nmax. wys: 106px\nmax. szer: 40px`);
             fileinput3.value = '';
             file3 = ''
         }
@@ -94,7 +94,7 @@ fileinput4.addEventListener('change', () => {
         
         if(height > 100 || width > 600){
             
-            document.querySelector("#plik-info").innerHTML = `Niepoprawny wymiar pliku (600x100)`
+            alert(`Niepoprawny wymiar pliku \nmax. wys: 100px\nmax. szer: 600px`);
             fileinput4.value = '';
             file4 = ''
         }
@@ -118,7 +118,7 @@ fileinput5.addEventListener('change', () => {
         
         if(height > 100 || width > 300){
             
-            document.querySelector("#plik-info").innerHTML = `Niepoprawny wymiar pliku (300x100)`
+            alert(`Niepoprawny wymiar pliku \nmax. wys: 100px\nmax. szer: 300px`);
             fileinput5.value = '';
             file5 = ''
         }
@@ -271,18 +271,47 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     submit.setAttribute('id', 'form-submit');
     submit.innerText = "Utwórz";
 
+    let form_square = document.createElement('div');
+    form_square.setAttribute('id', 'form-square');
+
+    let label_square = document.createElement('div');
+    label_square.setAttribute('id', 'label-square');
+
+    label_square.innerHTML = `
+    Treść <br />
+    Odpowiedź <br />
+    Podpowiedź 1 <br />
+    Podpowiedź 2 <br />
+    Klucz wejściowy <br />
+    Klucz wyjściowy <br />
+    Plik Grafiki: 
+    `
+
+    let br = new Array(6);
+    for(let i=0; i<6;i++){
+        br[i] = document.createElement('br');
+    }
+    
 
     form.append(pole_tresc);
+    form.append(br[0]);
     form.append(pole_odpowiedz);
+    form.append(br[1]);
     form.append(pole_podp1);
+    form.append(br[2]);
     form.append(pole_podp2);
+    form.append(br[3]);
     form.append(pole_kluczWe);
+    form.append(br[4]);
     form.append(pole_kluczWy);
+    form.append(br[5]);
     form.append(pole_grafika);
     
-    
-    nowa_zagadka.appendChild(form);
-    nowa_zagadka.appendChild(submit);
+    form_square.appendChild(form);
+    form_square.appendChild(submit);
+    nowa_zagadka.appendChild(label_square);
+    nowa_zagadka.appendChild(form_square);
+    //nowa_zagadka.appendChild(submit);
 
 
     document.querySelector('#form-submit').addEventListener('click', () => {
@@ -309,7 +338,8 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     document.querySelector('#icon-minus').addEventListener('click', () => {
         document.querySelector('#zagadka-icons-nowa').removeChild(minus)
         document.querySelector('#zagadka-icons-nowa').appendChild(plus)
-        nowa_zagadka.removeChild(form)
+        nowa_zagadka.removeChild(form_square);
+        nowa_zagadka.removeChild(label_square);
         nowa_zagadka.removeChild(submit)
     })
 
@@ -324,8 +354,11 @@ let edit_buttons = document.querySelectorAll('.edit');
 for(button of edit_buttons){
     button.addEventListener('click', (event) => {
         const grandParent = event.target.parentElement.parentElement
-        let child = grandParent.children[0]
+        let grandchild = grandParent.children[0]
+        let child = grandchild.children[2]
+        let sec_child = grandchild.children[1]
         
+
         let submit = document.createElement('button');
         submit.setAttribute('id', 'form-edit');
         submit.innerText = "Zmień";
@@ -342,12 +375,14 @@ for(button of edit_buttons){
         
         let edit = event.target
         event.target.parentElement.removeChild(edit);
-        child.children[0].classList.add('edit-form')
+        child.classList.add('edit-form')
+        sec_child.classList.add('edit-form')
         
         minus.addEventListener('click', (event) => {
             event.target.parentElement.prepend(edit)
             event.target.parentElement.removeChild(minus)
-            child.children[0].classList.remove('edit-form')
+            child.classList.remove('edit-form')
+            sec_child.classList.remove('edit-form')
             child.removeChild(submit)
         })
         
@@ -463,3 +498,113 @@ document.querySelector('#butt-wylog').addEventListener('click', () => {
         }
     });
 })
+
+
+/// ZATWIERDZANIE TEKSTU GRATULACYJNEGO
+
+document.querySelector('#but-grat-text').addEventListener('click', () => {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const formData = new FormData();
+    const tresc = document.querySelector('#text-gratulacje');
+
+    formData.append("tytul", "text_gratulacje");
+    formData.append('tresc', tresc.value)
+    fetch('nowa_graf/grat/', {
+        method: "POST",
+        headers: {'X-CSRFToken': csrftoken},
+        body: formData
+    }).then(response => {
+        if(response.status == 201){
+            if(confirm("Pomyślnie zaktualizowano!")){
+                location.reload();
+            }
+        }
+        else{
+            alert("Błąd!")
+        }
+    });
+})
+
+
+//// ZATWIERDZENIE TEKSTU STARTOWEGO
+
+document.querySelector('#but-start-text').addEventListener('click', () => {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const formData = new FormData();
+    const tresc = document.querySelector('#text-start');
+
+    formData.append("tytul", "text_start");
+    formData.append('tresc', tresc.value)
+    fetch('nowa_graf/starty/', {
+        method: "POST",
+        headers: {'X-CSRFToken': csrftoken},
+        body: formData
+    }).then(response => {
+        if(response.status == 201){
+            if(confirm("Pomyślnie zaktualizowano!")){
+                location.reload();
+            }
+        }
+        else{
+            alert("Błąd!")
+        }
+    });
+})
+
+
+//// DODAWANIA NOWEGO LOSOWEGO HASLA ZLEJ ODPOWIEDZI
+
+document.querySelector('#nowe-haslo-but').addEventListener('click', () => {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const formData = new FormData();
+    const tresc = document.querySelector('#nowe-haslo');
+
+    formData.append("tytul", "text_start");
+    formData.append('tresc', tresc.value)
+    fetch('/haslo/dodaj/', {
+        method: "POST",
+        headers: {'X-CSRFToken': csrftoken},
+        body: formData
+    }).then(response => {
+        if(response.status == 201){
+            if(confirm("Pomyślnie zaktualizowano!")){
+                location.reload();
+            }
+        }
+        else{
+            alert("Błąd!")
+        }
+    });
+})
+
+
+/// USUWANIE HASLA 
+
+let haslo_remove_buttons = document.querySelectorAll('.minusek');
+
+for(button of haslo_remove_buttons){
+    button.addEventListener('click', (event) => {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        let parent = event.target.parentElement;
+        
+        let id = parent.children[1].value;
+
+        let formData = new FormData()
+        formData.append('pole-id', id)
+
+        fetch('/haslo/usun/', {
+            method: "POST",
+            headers: {'X-CSRFToken': csrftoken},
+            body: formData
+        }).then(response => {
+            if(response.status == 201){
+                if(confirm("Pomyślnie usunięto!")){
+                    location.reload();
+                }
+            }
+            else{
+                alert("Błąd!")
+            }
+        });
+    })
+}

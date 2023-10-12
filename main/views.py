@@ -1,12 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.views.generic import CreateView
-from main.models import Zagadka, Plik_podp1, Plik_podp2, Plik_submit, Plik_graf_tyt, Plik_rozpocznij
+from main.models import Zagadka, Plik_podp1, Plik_podp2, Plik_submit, Plik_graf_tyt, Plik_rozpocznij, Napisy, LosoweHasla
 from main.forms import DokumentForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 import json
+from django.core.serializers import serialize
+
+
+# Funkcje/Zmienne pomocnicze
+
 
 # Create your views here.
 
@@ -20,19 +25,22 @@ class Main_view(CreateView):
             plik = Plik_graf_tyt.objects.last()
             plik2 = Plik_rozpocznij.objects.last()
             plik3 = Plik_submit.objects.last()
-            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3})
+            napis_startowy = Napisy.objects.get(nazwa = "text_start")
+            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start" : napis_startowy.tresc})
 
         elif(request.session['id_zagadki'] == 0):
             plik = Plik_graf_tyt.objects.last()
             plik2 = Plik_rozpocznij.objects.last()
             plik3 = Plik_submit.objects.last()
-            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3})
+            napis_startowy = Napisy.objects.get(nazwa = "text_start")
+            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start": napis_startowy.tresc})
         
         else:
             plik = Plik_podp1.objects.last()
             plik2 = Plik_podp2.objects.last()
             plik3 = Plik_submit.objects.last()
-            return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3})
+            napis_gratulacyjny = Napisy.objects.get(nazwa = "text_gratulacje")
+            return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3, "napis_gratulacje" : napis_gratulacyjny.tresc})
         
 
 class Pobierz_zagadke(CreateView):
@@ -88,6 +96,11 @@ class Pobierz_zagadke(CreateView):
             try:
                 zagadka = Zagadka.objects.first()
                 request.session['id_zagadki'] = zagadka.id
+                ostatnia_zagadka = Zagadka.objects.last()
+                if(zagadka.id == ostatnia_zagadka.id):
+                    request.session['czy_ostatnia'] = True
+                else:
+                    request.session['czy_ostatnia'] = False
             except:
                 request.session['id_zagadki'] = -1
                 context = {
@@ -101,6 +114,7 @@ class Pobierz_zagadke(CreateView):
         elif(up == 10):
             try:
                 zagadka = Zagadka.objects.get(id=request.session['id_zagadki'])
+                
             except:
                 request.session['id_zagadki'] = -1
                 context = {
@@ -115,6 +129,13 @@ class Pobierz_zagadke(CreateView):
             try:
                 zagadka = Zagadka.objects.get(klucz_wejsciowy = up)
                 request.session['id_zagadki'] = zagadka.id
+                ostatnia_zagadka = Zagadka.objects.last()
+                if(zagadka.id == ostatnia_zagadka.id):
+                    request.session['czy_ostatnia'] = 1
+                    print("ZMIENNA UTWORZONA")
+                else:
+                    request.session['czy_ostatnia'] = 0
+                    print("ZMIENNA UTWORZONA")
             except:
                 context = {
                     "serverresp" : "niepowodzenie",
@@ -127,6 +148,12 @@ class Pobierz_zagadke(CreateView):
         podp2 = zagadka.podp2
         kl_wyn = zagadka.klucz_wynikowy
         grafika = str(zagadka.grafika)
+        
+        if(request.session['czy_ostatnia']):
+            koniec = True
+        else:
+            koniec = False
+
         print(grafika)
 
         context = {
@@ -134,10 +161,10 @@ class Pobierz_zagadke(CreateView):
             "odpowiedz" : odpowiedz,
             "podp1" : podp1,
             "podp2" : podp2,
-            "koniec": False,
+            "koniec": koniec,
             "serverresp" : "powodzenie",
             "klucz_wynikowy" : kl_wyn,
-            "grafika" : grafika
+            "grafika" : grafika, 
         }
         return JsonResponse(context)
 
@@ -174,6 +201,7 @@ class Edytuj_zagadke(CreateView):
             #zagadka.grafika = request.FILES['pole-grafika']
 
             zagadka.save()
+
             return JsonResponse({"odpowiedz" : "Pomyślnie edytowano!"})
 
         return JsonResponse({"odpowiedz" : "Nie udało się edytować!"})
@@ -186,6 +214,7 @@ class Usun_zagadke(CreateView):
             zagadka.delete()
             Zagadka.objects.raw("DBCC CHECKIDENT('main_zagadka', RESEED, 0)")
             return JsonResponse({'odpowiedz' : 'Usunięto pomyślnie'})
+        
         return JsonResponse({'odpowiedz' : 'Nie udało się usunąć!'})
 
 #class Zaktualizuj_numer(CreateView):
@@ -212,7 +241,8 @@ class Administracja(CreateView):
     def get(self, request, *args, **kwargs):
         if(request.user.is_authenticated):
             lista_zagadek = Zagadka.objects.all()
-            return render(request, 'administracja.html', {'zagadki': lista_zagadek})
+            lista_hasel = LosoweHasla.objects.all()
+            return render(request, 'administracja.html', {'zagadki': lista_zagadek, 'hasla': lista_hasel})
         else:
             return HttpResponse(status = 403)
 
@@ -298,5 +328,55 @@ class Nowa_Grafika(CreateView):
             except:
                 return HttpResponse(status = 409)
         
+        elif(buttype == "grat"):
+            try:
+                stary_napis = Napisy.objects.get(nazwa = request.POST['tytul'])
+                stary_napis.delete()
+                nowy_napis = Napisy(nazwa = request.POST['tytul'], tresc = request.POST['tresc'])
+                nowy_napis.save()
+                return HttpResponse(status = 201)
+            except:
+                return HttpResponse(status = 409)
         
-       
+        elif(buttype == "starty"):
+            try:
+                Napisy.objects.get(nazwa = request.POST['tytul']).delete()
+                nowy_napis = Napisy(nazwa = request.POST['tytul'], tresc = request.POST['tresc'])
+                nowy_napis.save()
+                return HttpResponse(status = 201)
+            except:
+                return HttpResponse(status = 409)
+        
+
+class Gratulacje(CreateView):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'gratulacje.html')
+    
+class Pobierz_hasla(CreateView):
+    def get(self, request, *args, **kwargs):
+        Hasla = LosoweHasla.objects.all()
+        serialized_data = serialize("json", Hasla)
+        serialized_data = json.loads(serialized_data)
+
+        return JsonResponse(serialized_data, safe=False, status=200)
+        
+
+
+class Dodaj_haslo(CreateView):
+    def post(self, request, *args, **kwargs):
+        try:
+            nowe_haslo = LosoweHasla(tresc = request.POST['tresc'])
+            nowe_haslo.save()
+            return HttpResponse(status = 201)
+        except:
+            return HttpResponse(status = 409)
+
+class Usun_haslo(CreateView):
+    def post(self, request, *args, **kwargs):
+        id = request.POST['pole-id']
+        try:
+            Haslo = LosoweHasla.objects.get(id = id)
+            Haslo.delete()
+            return HttpResponse(status = 201)
+        except:
+            return HttpResponse(status = 409)

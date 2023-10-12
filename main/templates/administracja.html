@@ -38,14 +38,46 @@
                 <button id="butt-czysc3">Wyczyść</button>
                 <button id="butt-plik3">Prześlij</button>
                 <p id="plik-info"></p>
+                
+                Ustaw text gratulacyjny:
+                <div id="gratulacje-edit">
+                    <img src="/media/images/rest/okno_gratulacyjne.png" id="gratulacje-img"/>
+                    <input type="text" name="text-gratulacje" id="text-gratulacje" />
+                    <button id='but-grat-text'>Zatwierdź</button>
+                </div>
+                
+                <div id="text-start-edit">
+                    Ustaw text na stronie startowej:
+                    <img src="/media/images/rest/okno_start.png" id="start-img" />
+                    <input type="text" name="text-start" id="text-start" />
+                    <button id="but-start-text">Zatwierdź</button>
+                </div>
+                <div id="div-losowe-hasla">
+                    Lista losowych haseł nieprawidłowej odpowiedzi:
+                    {% for haslo in hasla %}
+                    <div class="div-haslo">
+                        <p class="text-haslo">-{{haslo.tresc}}</p>
+                        <input type="hidden" value={{haslo.id}} name="haslo-id" />
+                        <img src="/media/images/rest/minus.png" class="minusek" />
+                    </div>
+                    {%endfor%}
+                    <div class="div-haslo">
+                        <input type="text" id="nowe-haslo" name="nowe-haslo" />
+                        <button id="nowe-haslo-but">dodaj</button>
+                    </div>
+                </div>
             </div>
+
+            
 
             <div id="zagadki">
                 <hr />
                 <p> Panel zarządzania zagadkami </p>
                 <div id="utworz-zagadke">
                     <div class="zagadka-content" id="zagadka-content-nowa">
-                        Utwórz nową zagadkę
+                        <div id="utworz-text-div"> 
+                            Utwórz nową zagadkę
+                        </div>
                     </div>
                     <div class="zagadka-icons" id="zagadka-icons-nowa">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" id="nowa-zag-butt"  viewBox="0 0 50 50" width="30px" height="30px">    <path d="M25,2C12.317,2,2,12.317,2,25s10.317,23,23,23s23-10.317,23-23S37.683,2,25,2z M37,26H26v11h-2V26H13v-2h11V13h2v11h11V26z"/></svg>
@@ -54,17 +86,30 @@
                 {% for zagadka in zagadki %}
                     <div class="zagadka">
                         <div class="zagadka-content">
-                            {{zagadka.tresc}}
-                            <form class="edit-form-hidden">
-                                <input type = "text" name="pole-tresc" value = "{{zagadka.tresc}}"/>
-                                <input type = "text" name="pole-odpowiedz" value = "{{zagadka.odpowiedz}}"/>
-                                <input type = "text" name="pole-podp1" value = "{{zagadka.podp1}}"/>
-                                <input type = "text" name="pole-podp2" value = "{{zagadka.podp2}}"/>
-                                <input type = "text" name="pole-kluczWe" value = "{{zagadka.klucz_wejsciowy}}"/>
-                                <input type = "text" name="pole-kluczWy" value = "{{zagadka.klucz_wynikowy}}"/>
-                                <input type = "file" name="pole-grafika"/>
-                                <input type = "hidden" value="{{zagadka.id}}" name="pole-id"/>
-                            </form>
+                            <div id="utworz-tekst-div">
+                                {{zagadka.tresc}}
+                            </div>
+                            <div id="label-square" class="edit-form-hidden">
+                                Treść <br />
+                                Odpowiedź <br />
+                                Podpowiedź 1 <br />
+                                Podpowiedź 2 <br />
+                                Klucz wejściowy <br />
+                                Klucz wyjściowy <br />
+                                Plik Grafiki: 
+                            </div>
+                            <div id="form-square" class="edit-form-hidden">
+                                <form>
+                                    <input type = "text" name="pole-tresc" value = "{{zagadka.tresc}}"/>
+                                    <input type = "text" name="pole-odpowiedz" value = "{{zagadka.odpowiedz}}"/>
+                                    <input type = "text" name="pole-podp1" value = "{{zagadka.podp1}}"/>
+                                    <input type = "text" name="pole-podp2" value = "{{zagadka.podp2}}"/>
+                                    <input type = "text" name="pole-kluczWe" value = "{{zagadka.klucz_wejsciowy}}"/>
+                                    <input type = "text" name="pole-kluczWy" value = "{{zagadka.klucz_wynikowy}}"/>
+                                    <input type = "file" name="pole-grafika"/>
+                                    <input type = "hidden" value="{{zagadka.id}}" name="pole-id"/>
+                                </form>
+                            </div>
                         </div>
                         <div class="zagadka-icons">
                             <img src='/media/images/rest/edit.png' class = 'icon edit'/>

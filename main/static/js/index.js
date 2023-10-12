@@ -1,4 +1,6 @@
 let odpowiedz, odp1, odp2, koniec, kl_wej, kl_wyj
+let hasla = new Array(100);
+
 async function pobierz_zagadke(){
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     let data = { up : 10 }
@@ -19,14 +21,45 @@ async function pobierz_zagadke(){
         kl_wej = data.klucz_wejsciowy
         kl_wyj = data.klucz_wynikowy
     })
-    ukonczenie()
+
+    await fetch('haslo/pobierz/', {
+        method : "GET",
+        headers : {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+    }).then(result => result.json()).then(data => {
+        for(let i=0;i<data.length;i++){
+            hasla[i] = data[i].fields.tresc;
+        }
+    })
+    //ukonczenie()
 }
     //document.querySelector('#pytanie').innerHTML = zagadka.tresc
     pobierz_zagadke()
-    
-    
 
     
+    /// KODY PODSUMOWANIA ////////////////////////////
+    //                                              //
+    //      1 - brak podpowiedzi                    //
+    //      2 - jedna podpowiedz                    //
+    //      3 - dwie podpowiedzi                    //
+    //      4 - dwie podpowiedzi i odkryte haslo    //
+    //      5 - jedna podpowiedz i odkryte haslo    //
+    //      6 - odkryte haslo                       //
+    //                                              //
+    //////////////////////////////////////////////////
+
+    /// SPRAWDZANIE SESJI pod kątem uzytych podpowiedzi
+
+    numer_zagadki = sessionStorage.getItem('nr_zagadki');
+    kod_podsumowania = sessionStorage.getItem(`z${numer_zagadki}`);
+    console.log('numer_zagadki : '+ numer_zagadki);
+    console.log(sessionStorage.getItem(`z${numer_zagadki}`))
+    console.log(sessionStorage.getItem('podp1'));
+    console.log(sessionStorage.getItem('podp2'));
+    console.log(sessionStorage.getItem('odp'));
+
+    ///
+
 
     // PODPOWIEDZ 1
     document.querySelector("#buttp1").addEventListener('click', () => {
@@ -36,7 +69,7 @@ async function pobierz_zagadke(){
         
         okno.setAttribute('id', 'okno');
         okno.innerHTML = `
-            <p id="czy_na_pewno">Czy na pewno chcesz wyświetlić odpowiedź?</p>
+            <p id="czy_na_pewno">Czy na pewno chcesz wyświetlić podpowiedź?</p>
             <div id="przyciski_tak_nie">
             <button id="butt-potw-tak">tak</button>
             <button id="butt-potw-nie">nie</button>
@@ -58,6 +91,23 @@ async function pobierz_zagadke(){
             body.removeChild(body.lastChild);
             container.classList.toggle('container-darken')
             document.querySelector("#podpowiedz").innerHTML = `Podpowiedź: ${odp1}`
+            
+            sessionStorage.setItem('podp1', 'uzyte');
+            if(kod_podsumowania==1){
+                kod_podsumowania=2;
+            }
+            else if(sessionStorage.getItem('podp2') == 'nieuzyte'){
+                kod_podsumowania=2;
+            }
+            else if(sessionStorage.getItem('podp2') == 'uzyte'){
+                kod_podsumowania=3;
+            }
+            else if(sessionStorage.getItem('podp2') == 'uzyte' && sessionStorage.getItem('odp')=='uzyte'){
+                kod_podsumowania=4;
+            }
+            else if(sessionStorage.getItem('podp2') == 'nieuzyte' && sessionStorage.getItem('odp')=='uzyte'){
+                kod_podsumowania=5;
+            }
         })
     })
 
@@ -65,6 +115,58 @@ async function pobierz_zagadke(){
 
     // PODPOWIEDZ 2
     document.querySelector("#buttp2").addEventListener('click', () => {
+        let okno = document.createElement('div');
+        let container = document.querySelector(".container");
+        let body = document.querySelector("body");
+
+        okno.setAttribute('id', 'okno');
+        okno.innerHTML = `
+            <p id="czy_na_pewno">Czy na pewno chcesz wyświetlić podpowiedź?</p>
+            <div id="przyciski_tak_nie">
+            <button id="butt-potw-tak">tak</button>
+            <button id="butt-potw-nie">nie</button>
+            </div>
+        `
+
+        container.classList.toggle('container-darken');
+        document.querySelector("body").appendChild(okno);
+
+
+        // obsługa przycisku NIE ////////////////////////////////////////////////////////////////////////////////////////
+        document.querySelector("#butt-potw-nie").addEventListener('click', () => {
+            body.removeChild(body.lastChild);
+            container.classList.toggle('container-darken');
+        })
+
+        // obsługa przycisku TAK ////////////////////////////////////////////////////////////////////////////////////////
+        document.querySelector('#butt-potw-tak').addEventListener('click', () => {
+            body.removeChild(body.lastChild);
+            container.classList.toggle('container-darken')
+            document.querySelector("#podpowiedz").innerHTML = `Podpowiedź: ${odp2}`
+        
+            sessionStorage.setItem('podp2', 'uzyte');
+            if(kod_podsumowania==1){
+                kod_podsumowania=2;
+            }
+            else if(sessionStorage.getItem('podp1') == 'nieuzyte'){
+                kod_podsumowania=2;
+            }
+            else if(sessionStorage.getItem('podp1') == 'uzyte'){
+                kod_podsumowania=3;
+            }
+            else if(sessionStorage.getItem('podp1') == 'uzyte' && sessionStorage.getItem('odp')=='uzyte'){
+                kod_podsumowania=4;
+            }
+            else if(sessionStorage.getItem('podp1') == 'nieuzyte' && sessionStorage.getItem('odp')=='uzyte'){
+                kod_podsumowania=5;
+            }
+        })
+    })
+
+
+
+    // OPDOWIEDZ
+    document.querySelector('#but-pokaz-odp').addEventListener('click', () => {
         let okno = document.createElement('div');
         let container = document.querySelector(".container");
         let body = document.querySelector("body");
@@ -89,14 +191,49 @@ async function pobierz_zagadke(){
         })
 
         // obsługa przycisku TAK ////////////////////////////////////////////////////////////////////////////////////////
-        document.querySelector('#butt-potw-tak').addEventListener('click', () => {
-            body.removeChild(body.lastChild);
-            container.classList.toggle('container-darken')
-            document.querySelector("#podpowiedz").innerHTML = `Podpowiedź: ${odp2}`
+        document.querySelector('#butt-potw-tak').addEventListener('click', (event) => {
+                let minuty = 0;
+                let sekundy = 10;
+
+                let x = setInterval(function(){
+                    document.querySelector('#okno').innerHTML = `
+                    ${minuty}:${sekundy}
+                    `
+                    if(sekundy>0){
+                        sekundy--;
+                    }
+                    else{
+                        sekundy = 59;
+                        minuty--;
+                    }
+
+                    if(minuty==0 && sekundy ==0){
+                        clearInterval(x)
+                        body.removeChild(body.lastChild);
+                        container.classList.toggle('container-darken')
+                        document.querySelector("#podpowiedz").innerHTML = `Odpowiedź: ${odpowiedz}`
+        
+                        sessionStorage.setItem('odp', 'uzyte');
+                        if(kod_podsumowania==1){
+                        kod_podsumowania=6;
+                        }
+                        else if(sessionStorage.getItem('podp1') == 'nieuzyte' && sessionStorage.getItem('podp2') == 'nieuzyte'){
+                            kod_podsumowania=6;
+                        }
+                        else if(sessionStorage.getItem('podp1') == 'uzyte' && sessionStorage.getItem('podp2') == 'nieuzyte'){
+                            kod_podsumowania=5;
+                        }
+                        else if(sessionStorage.getItem('podp1') == 'nieuzyte' && sessionStorage.getItem('podp2') == 'uzyte'){
+                            kod_podsumowania=5;
+                        }
+                        else if(sessionStorage.getItem('podp1') == 'uzyte' && sessionStorage.getItem('podp2')=='uzyte'){
+                            kod_podsumowania=4;
+                        }
+                    }
+                    
+                },1000)
         })
     })
-
-    
 
     // OBSŁUGA PRZYCISKU DALEJ
     document.querySelector('#butt-next').addEventListener('click', () => {
@@ -104,7 +241,61 @@ async function pobierz_zagadke(){
         console.log(kl_wyj);
         if (wartosc == odpowiedz){
             console.log("Poprawna odpowiedz");
-            document.querySelector('#odpowiedz').innerHTML = `
+
+
+
+            ////////// OBSZAR TESTOWY
+            let okno = document.createElement('div');
+            let container = document.querySelector(".container");
+            let body = document.querySelector("body");
+            
+            let napis_grat = document.querySelector('#paragraf-gratulacje').value;
+            okno.setAttribute('id', 'okno-gratulacje');
+            okno.innerHTML = `
+                <p id="paragraf-gratulacje">${napis_grat}</p>
+                
+                <div class="fb-hover-div">
+                    <img class="fb-icon" src='/media/images/rest/Facebook_icon_2013.png' />
+                    <div class="fb-text">Udostępnij na Facebooku!</div>
+                </div>
+                <div id="dalsze-menu"></div>
+                `;
+    
+            container.classList.toggle('container-darken');
+            document.querySelector("body").appendChild(okno);
+    
+            //// OBSŁUGA IKONKI FACEBOOK
+            
+            fb_div = document.querySelector('.fb-hover-div');
+            fb_napis = document.querySelector('.fb-text');
+            fb_icon = document.querySelector('.fb-icon');
+            
+            fb_div.addEventListener('mouseover', () => {
+                fb_div.classList.add('fb-hover-div-wide');
+                fb_napis.classList.add('fb-text-visible');
+            })
+
+            fb_div.addEventListener('mouseout', () => {
+                fb_div.classList.remove('fb-hover-div-wide');
+                fb_napis.classList.remove('fb-text-visible');
+            })
+
+            fb_div.addEventListener('click', () => {
+                window.location = "https://www.facebook.com";
+            })
+            
+           
+            /////////
+
+        
+
+
+
+            if(koniec){
+                ukonczenie()
+            }
+            else{
+                document.querySelector('#dalsze-menu').innerHTML = `
                 <p>Poprawna odpowiedź! Kod do następnej zagadki to: ${kl_wyj}</p>
                 <input type="text" placeholder="podaj kod kolejnej zagadki" id="kod-zagadki">
                 <button id="nastep-zagad">Przejdź</button>
@@ -113,6 +304,8 @@ async function pobierz_zagadke(){
                 <button id="butt-przejdz-start">Przejdz do strony głównej</button>
                 <div id="server-info"></div>
             `
+            }
+            
 
             // OBSŁUGA PRZYCISKU JESZCZE RAZ
             document.querySelector('#butt-jeszcze-raz').addEventListener('click', () => {
@@ -138,6 +331,14 @@ async function pobierz_zagadke(){
                         `
                     }
                     else{
+                        sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
+                        sessionStorage.setItem('podp1', 'nieuzyte');
+                        sessionStorage.setItem('podp2', 'nieuzyte');
+                        sessionStorage.setItem('odp', 'nieuzyte');
+                        numer_zagadki++;
+                        sessionStorage.setItem('nr_zagadki', numer_zagadki);
+                        sessionStorage.setItem(`z${numer_zagadki}`, 1);
+                        
                         location.reload();
                     }
                 })   
@@ -156,13 +357,24 @@ async function pobierz_zagadke(){
                 }).then(response => location.reload())
             })
         }
+        else{
+            let okno_wiadomosci = document.querySelector('#podpowiedz');
+            let numer = Math.floor(Math.random()*8)           
+
+            okno_wiadomosci.innerHTML = `
+            ${hasla[numer]}
+            `
+        }
     })
+
 
     async function ukonczenie(){
         if(koniec == true){
-            document.querySelector('#odpowiedz').innerHTML = `
+            document.querySelector('#dalsze-menu').innerHTML = `
+                Ukończyłeś wszystkie zagadki! <br />
                 <button id="od-nowa">Rozpocznij od początku</button>
                 <button id="butt-jeszcze-raz">Powtórz ostatnią zagadkę</button>
+                <button id="butt-pods">Przejdź do podsumowania</button>
             `
             document.querySelector('#od-nowa').addEventListener('click', () => {
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -188,6 +400,11 @@ async function pobierz_zagadke(){
                 }).then((response) => {
                     location.reload()
                 })
+            })
+
+            document.querySelector('#butt-pods').addEventListener('click', () => {
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
+                location.replace('/gratulacje/'); ///PRZEJSCIE DO PODSUMOWANIA /////////////////////////
             })
         }
 

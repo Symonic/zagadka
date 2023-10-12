@@ -289,3 +289,146 @@ hr{
 #edit-info-par{
     color:purple
 }
+
+#wynikowe{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(35, 70, 99);
+    color: rgb(170, 158, 143);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#gratulacje-img{
+    width: 80%;
+    height: 30%;
+}
+
+#gratulacje-edit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#text-gratulacje{
+    position: absolute;
+    width: 50%;
+    height: 50px;
+    font-size: 15px;
+    text-align: center;
+}
+#grat-info{
+    position: absolute;
+    font-size: 20px;
+}
+
+#but-grat-text{
+    position: absolute;
+    top:60%;
+
+}
+
+#paragraf-gratulacje{
+    font-size: 30px;
+}
+
+.fb-icon{
+    width: 30px;
+    height: 100%;
+}
+
+.fb-hover-div{
+    height: 16%;
+    width: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    transition: 1.5s;
+}
+
+.fb-hover-div-wide{
+    height: 16%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.fb-text{
+    display: none;
+}
+.fb-text-visible{
+    display: block;
+    background-color: rgb(46, 110, 110);
+    height: 8px;
+    border-radius: 0px 10px 10px 0px;
+    padding: 10px;
+    white-space: nowrap;
+}
+
+#okno-gratulacje{
+    height: 40%;
+    width:  33%;
+    background-color: rgb(54, 54, 46);
+    position: absolute;
+    left:33%;
+    top:40%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#text-start-edit{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+    border: solid black 1px;
+    border-radius: 20px;
+    padding:20px;
+}
+
+#text-start{
+    width: 80%;
+    height: 50px;
+    font-size: 15px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+#label-square{
+    width: 50%;
+    float:left;
+}
+
+#form-square{
+    float:left;
+    width: 50%;
+}
+
+#utworz-text-div{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.div-haslo{
+    width: 100%;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.minusek{
+    width: 30px;
+    height: 30px;
+    margin-left: 50px;
+}

@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Zagadka</title>
+        <link rel="stylesheet" type='text/css' href="{% static 'css/index.css' %}">
+    </head>
+    <body>
+        <div class="container">
+            <div id="wynikowe">
+            </div> 
+            <button id="od-nowa">Rozpocznij od początku</button>
+        </div>
+    </body>
+    {% csrf_token %}
+    <script src="{% static 'js/gratulacje.js' %}"></script>
+</html>

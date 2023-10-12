@@ -19,7 +19,13 @@
                 <button style="background: url({{podp1.dokument.url}})" class="butt-podp" id="buttp1"/>
                 <button style="background: url({{podp2.dokument.url}})" class="butt-podp" id="buttp2"/>
             </div>
+            <div id="div-pokaz">
+                <button id="but-pokaz-odp">Pokaz odpowiedź</button>
+            </div>
         </div>
+
+        <input type='hidden' id="paragraf-gratulacje" value={{napis_gratulacje}} />
+
     </body>
     {% csrf_token %}
     <script src="{% static 'js/index.js' %}"></script>

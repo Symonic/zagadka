@@ -26,3 +26,10 @@ class Plik_graf_tyt(models.Model):
 
 class Plik_rozpocznij(models.Model):
     dokument = models.FileField(upload_to='images/rozpocznij')
+
+class Napisy(models.Model):
+    nazwa = models.CharField(max_length=50)
+    tresc = models.CharField(max_length=200)
+
+class LosoweHasla(models.Model):
+    tresc = models.CharField(max_length=200)
