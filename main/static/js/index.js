@@ -297,8 +297,7 @@ async function pobierz_zagadke(){
             else{
                 document.querySelector('#dalsze-menu').innerHTML = `
                 <p>Poprawna odpowiedź! Kod do następnej zagadki to: ${kl_wyj}</p>
-                <input type="text" placeholder="podaj kod kolejnej zagadki" id="kod-zagadki">
-                <button id="nastep-zagad">Przejdź</button>
+                <button id="nastep-zagad">Przejdź do następnej zagadki</button>
                 <br />
                 <button id="butt-jeszcze-raz">Rozwiąż jeszcze raz</button>
                 <button id="butt-przejdz-start">Przejdz do strony głównej</button>
@@ -314,10 +313,10 @@ async function pobierz_zagadke(){
 
             // OBSŁUGA PRZYCISKU NASTEP-ZAGAD
             document.querySelector('#nastep-zagad').addEventListener('click', () => {
-                const klucz_wejsciowy = document.querySelector('#kod-zagadki').value;
+                
 
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                let data = { up : klucz_wejsciowy } 
+                let data = { up : 1 } 
 
                 fetch('pobierz_zagadke/', {
                     method : "POST", 

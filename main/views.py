@@ -61,6 +61,13 @@ class Pobierz_zagadke(CreateView):
             try:
                 zagadka = Zagadka.objects.filter(id__gt=request.session['id_zagadki']).order_by('id').first()
                 request.session['id_zagadki'] = zagadka.id
+                ostatnia_zagadka = Zagadka.objects.last()
+                if(zagadka.id == ostatnia_zagadka.id):
+                    request.session['czy_ostatnia'] = 1
+                    print("ZMIENNA UTWORZONA")
+                else:
+                    request.session['czy_ostatnia'] = 0
+                    print("ZMIENNA UTWORZONA")
                 request.session.modified = True
             except Exception as e:
                 print(e)
