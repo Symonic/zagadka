@@ -472,8 +472,9 @@ for (button of remove_buttons){
             body.removeChild(body.lastChild);
             container.classList.toggle('container-darken')
 
-            const grandParent = event.target.parentElement.parentElement;
-            let child = grandParent.children[0]
+            const grandParent = event.target.parentElement.parentElement
+            let grandchild = grandParent.children[0]
+            let child = grandchild.children[2]
     
             const form = child.children[0]
             const data = new FormData(form)

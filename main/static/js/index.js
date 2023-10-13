@@ -254,42 +254,15 @@ async function pobierz_zagadke(){
             okno.innerHTML = `
                 <p id="paragraf-gratulacje">${napis_grat}</p>
                 
-                <div class="fb-hover-div">
-                    <img class="fb-icon" src='/media/images/rest/Facebook_icon_2013.png' />
-                    <div class="fb-text">Udostępnij na Facebooku!</div>
-                </div>
                 <div id="dalsze-menu"></div>
                 `;
     
             container.classList.toggle('container-darken');
             document.querySelector("body").appendChild(okno);
     
-            //// OBSŁUGA IKONKI FACEBOOK
-            
-            fb_div = document.querySelector('.fb-hover-div');
-            fb_napis = document.querySelector('.fb-text');
-            fb_icon = document.querySelector('.fb-icon');
-            
-            fb_div.addEventListener('mouseover', () => {
-                fb_div.classList.add('fb-hover-div-wide');
-                fb_napis.classList.add('fb-text-visible');
-            })
+          
 
-            fb_div.addEventListener('mouseout', () => {
-                fb_div.classList.remove('fb-hover-div-wide');
-                fb_napis.classList.remove('fb-text-visible');
-            })
-
-            fb_div.addEventListener('click', () => {
-                window.location = "https://www.facebook.com";
-            })
-            
-           
-            /////////
-
-        
-
-
+    
 
             if(koniec){
                 ukonczenie()

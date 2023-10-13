@@ -51,3 +51,26 @@ document.querySelector('#od-nowa').addEventListener('click', () => {
         location.replace('/')
     })
 })
+
+
+
+
+
+
+            fb_div = document.querySelector('.fb-hover-div');
+            fb_napis = document.querySelector('.fb-text');
+            fb_icon = document.querySelector('.fb-icon');
+            
+            fb_div.addEventListener('mouseover', () => {
+                fb_div.classList.add('fb-hover-div-wide');
+                fb_napis.classList.add('fb-text-visible');
+            })
+
+            fb_div.addEventListener('mouseout', () => {
+                fb_div.classList.remove('fb-hover-div-wide');
+                fb_napis.classList.remove('fb-text-visible');
+            })
+
+            fb_div.addEventListener('click', () => {
+                window.location = "https://www.facebook.com";
+            })
