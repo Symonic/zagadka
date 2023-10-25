@@ -13,7 +13,7 @@
                 <button id="butt-wylog">Wyloguj</button>
             </div>
             <div id="wgrywanie">
-                Wgraj grafike tytułową:
+                Wgraj grafike startową:
                 <input type="file" id="prze-plik4"/>
                 <button id="butt-czysc4">Wyczyść</button>
                 <button id="butt-plik4">Prześlij</button>
@@ -33,6 +33,11 @@
                 <button id="butt-czysc2">Wyczyść</button>
                 <button id="butt-plik2">Prześlij</button>
 
+                Wgraj grafike do przycisku [Pokaz odpowiedź]:
+                <input type="file" id="prze-plik6"/>
+                <button id="butt-czysc6">Wyczyść</button>
+                <button id="butt-plik6">Prześlij</button>
+
                 Wgraj grafike do przycisku [Zgadnij]:
                 <input type="file" id="prze-plik3"/>
                 <button id="butt-czysc3">Wyczyść</button>
@@ -41,7 +46,6 @@
                 
                 Ustaw text gratulacyjny:
                 <div id="gratulacje-edit">
-                    <img src="/media/images/rest/okno_gratulacyjne.png" id="gratulacje-img"/>
                     <input type="text" name="text-gratulacje" id="text-gratulacje" />
                     <button id='but-grat-text'>Zatwierdź</button>
                 </div>
@@ -106,8 +110,8 @@
                                     <input type = "text" name="pole-podp2" value = "{{zagadka.podp2}}"/>
                                     <input type = "text" name="pole-kluczWe" value = "{{zagadka.klucz_wejsciowy}}"/>
                                     <input type = "text" name="pole-kluczWy" value = "{{zagadka.klucz_wynikowy}}"/>
-                                    <input type = "file" name="pole-grafika"/>
-                                    <input type = "hidden" value="{{zagadka.id}}" name="pole-id"/>
+                                    <input type = "file" name="pole-grafika" class ="file_zagadka_edit"/>
+                                    <input type = "hidden" value="{{zagadka.id}}" name="pole-id" />
                                 </form>
                             </div>
                         </div>

@@ -10,10 +10,14 @@ async function pobierz_zagadke(){
         mode: 'same-origin',
         body : JSON.stringify(data)
     }).then(result => result.json()).then(data => {
-        document.querySelector('#pytanie').innerHTML = `
-        <img src="/media/${data.grafika}" /><br />
-        ${data.tresc}
-        `
+        let pyt = document.createElement('p');
+        pyt.setAttribute('id', 'par-pyt');
+        pyt.innerHTML = `${data.tresc}`
+        document.querySelector('#tresc-pytania').appendChild(pyt);
+        let cont = document.querySelector('.container');
+        cont.style.backgroundImage=`url("/media/${data.grafika}")`;
+        //<img src="/media/${data.grafika}" /><br />
+
         odpowiedz = data.odpowiedz
         odp1 = data.podp1
         odp2 = data.podp2
@@ -67,9 +71,9 @@ async function pobierz_zagadke(){
         let container = document.querySelector(".container");
         let body = document.querySelector("body");
         
-        okno.setAttribute('id', 'okno');
+        okno.setAttribute('id', 'okno-gratulacje');
         okno.innerHTML = `
-            <p id="czy_na_pewno">Czy na pewno chcesz wyświetlić podpowiedź?</p>
+            <p id="par-gratulacje">Czy na pewno chcesz wyświetlić podpowiedź?</p>
             <div id="przyciski_tak_nie">
             <button id="butt-potw-tak">tak</button>
             <button id="butt-potw-nie">nie</button>
@@ -119,9 +123,9 @@ async function pobierz_zagadke(){
         let container = document.querySelector(".container");
         let body = document.querySelector("body");
 
-        okno.setAttribute('id', 'okno');
+        okno.setAttribute('id', 'okno-gratulacje');
         okno.innerHTML = `
-            <p id="czy_na_pewno">Czy na pewno chcesz wyświetlić podpowiedź?</p>
+            <p id="par-gratulacje">Czy na pewno chcesz wyświetlić podpowiedź?</p>
             <div id="przyciski_tak_nie">
             <button id="butt-potw-tak">tak</button>
             <button id="butt-potw-nie">nie</button>
@@ -171,9 +175,9 @@ async function pobierz_zagadke(){
         let container = document.querySelector(".container");
         let body = document.querySelector("body");
 
-        okno.setAttribute('id', 'okno');
+        okno.setAttribute('id', 'okno-gratulacje');
         okno.innerHTML = `
-            <p id="czy_na_pewno">Czy na pewno chcesz wyświetlić odpowiedź?</p>
+            <p id="par-gratulacje">Czy na pewno chcesz wyświetlić odpowiedź?</p>
             <div id="przyciski_tak_nie">
             <button id="butt-potw-tak">tak</button>
             <button id="butt-potw-nie">nie</button>
@@ -269,9 +273,8 @@ async function pobierz_zagadke(){
             }
             else{
                 document.querySelector('#dalsze-menu').innerHTML = `
-                <p>Poprawna odpowiedź! Kod do następnej zagadki to: ${kl_wyj}</p>
+                <p id="par-gratulacje">Poprawna odpowiedź! Kod do następnej zagadki to: ${kl_wyj}</p>
                 <button id="nastep-zagad">Przejdź do następnej zagadki</button>
-                <br />
                 <button id="butt-jeszcze-raz">Rozwiąż jeszcze raz</button>
                 <button id="butt-przejdz-start">Przejdz do strony głównej</button>
                 <div id="server-info"></div>

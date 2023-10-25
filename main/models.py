@@ -27,6 +27,9 @@ class Plik_graf_tyt(models.Model):
 class Plik_rozpocznij(models.Model):
     dokument = models.FileField(upload_to='images/rozpocznij')
 
+class Plik_odp(models.Model):
+    dokument = models.FileField(upload_to='images/odp')
+
 class Napisy(models.Model):
     nazwa = models.CharField(max_length=50)
     tresc = models.CharField(max_length=200)

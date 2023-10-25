@@ -3,8 +3,9 @@ let fileinput2 = document.querySelector("#prze-plik2")
 let fileinput3 = document.querySelector('#prze-plik3')
 let fileinput4 = document.querySelector('#prze-plik4')
 let fileinput5 = document.querySelector('#prze-plik5')
+let fileinput6 = document.querySelector('#prze-plik6')
 
-let file = '', file2 = '', file3 = '', file4 = '', file5 = '';
+let file = '', file2 = '', file3 = '', file4 = '', file5 = '', file6 = '';
 
 fileinput.addEventListener('change', () => {
     file = fileinput.files[0];
@@ -20,9 +21,9 @@ fileinput.addEventListener('change', () => {
         let height = this.height;
         let width = this.width;
         
-        if(height > 100 || width > 400){
+        if(height !=66 || width != 150){
             
-            alert(`Niepoprawny wymiar pliku \nmax. wys: 100px\nmax. szer: 400px`);
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 150px\nmax. szer: 66px`);
             fileinput.value = '';
             file = ''
         }
@@ -44,9 +45,9 @@ fileinput2.addEventListener('change', () => {
         let height = this.height;
         let width = this.width;
         
-        if(height > 100 || width > 400){
+        if(height !=66 || width != 150){
             
-            alert(`Niepoprawny wymiar pliku \nmax. wys: 100px\nmax. szer: 400px`);
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 66px\nmax. szer: 150px`);
             fileinput2.value = '';
             file2 = ''
         }
@@ -68,9 +69,9 @@ fileinput3.addEventListener('change', () => {
         let height = this.height;
         let width = this.width;
         
-        if(height > 106 || width > 40){
+        if(height != 66 || width != 58){
             
-            alert(`Niepoprawny wymiar pliku \nmax. wys: 106px\nmax. szer: 40px`);
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 66px\noczek. szer: 58px`);
             fileinput3.value = '';
             file3 = ''
         }
@@ -92,9 +93,9 @@ fileinput4.addEventListener('change', () => {
         let height = this.height;
         let width = this.width;
         
-        if(height > 100 || width > 600){
+        if(height != 720 || width != 830){
             
-            alert(`Niepoprawny wymiar pliku \nmax. wys: 100px\nmax. szer: 600px`);
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 720px\noczek. szer: 830px`);
             fileinput4.value = '';
             file4 = ''
         }
@@ -126,6 +127,30 @@ fileinput5.addEventListener('change', () => {
     image.src = objectUrl
 })
 
+fileinput6.addEventListener('change', () => {
+    file6 = fileinput6.files[0];
+
+    console.log(file6.size);
+
+    let _URL = window.URL || window.webkitURL;
+
+    let image = new Image();
+    let objectUrl = _URL.createObjectURL(file6);
+
+    image.onload = function () {
+        let height = this.height;
+        let width = this.width;
+        
+        if(height !=66 || width != 150){
+            
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 150px\nmax. szer: 66px`);
+            fileinput6.value = '';
+            file6 = ''
+        }
+    }
+    image.src = objectUrl
+})
+
 
 document.querySelector('#butt-czysc').addEventListener('click', () => {
     fileinput.value = '';
@@ -150,6 +175,11 @@ document.querySelector('#butt-czysc4').addEventListener('click', () => {
 document.querySelector('#butt-czysc5').addEventListener('click', () => {
     fileinput5.value = '';
     file5 = ''
+})
+
+document.querySelector('#butt-czysc6').addEventListener('click', () => {
+    fileinput6.value = '';
+    file6 = ''
 })
 
 document.querySelector("#butt-plik").addEventListener('click', () => {
@@ -227,10 +257,24 @@ document.querySelector("#butt-plik5").addEventListener('click', () => {
     
 })
 
+document.querySelector("#butt-plik6").addEventListener('click', () => {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const formData = new FormData();
+
+    if(file6 != ''){
+        formData.append("docfile", file6);
+        fetch('nowa_graf/odp/', {
+            method: "POST",
+            headers: {'X-CSRFToken': csrftoken},
+            body: formData
+        })
+    }
+    
+})
+
 document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     let nowa_zagadka = document.querySelector("#zagadka-content-nowa");
     let form = document.createElement('form');
-
 
     let pole_tresc = document.createElement('input');
     pole_tresc.setAttribute("type", "text");
@@ -266,6 +310,30 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     pole_grafika.setAttribute("type", "file");
     pole_grafika.setAttribute("name", "pole-grafika");
     pole_grafika.setAttribute("placeholder", "grafika");
+    let file_grafika = ''
+
+    pole_grafika.addEventListener('change', () => {
+        file_grafika = pole_grafika.files[0];
+    
+    
+        let _URL = window.URL || window.webkitURL;
+    
+        let image = new Image();
+        let objectUrl = _URL.createObjectURL(file_grafika);
+    
+        image.onload = function () {
+            let height = this.height;
+            let width = this.width;
+            
+            if(height != 830 || width != 720){
+                
+                alert(`Niepoprawny wymiar pliku \noczek. wys: 830px\noczek. szer: 720px`);
+                pole_grafika.value = '';
+                file_grafika = ''
+            }
+        }
+        image.src = objectUrl
+    })
 
     let submit = document.createElement('button');
     submit.setAttribute('id', 'form-submit');
@@ -437,6 +505,36 @@ for(button of edit_buttons){
     })
 }
 
+         ///// OBSLUGA ALERTU PRZYCISKU GRAFIKI
+
+let files_input_collection = document.querySelectorAll('.file_zagadka_edit');
+
+for(element of files_input_collection){
+    element.addEventListener('change', (event) => {
+        let file_grafika = event.target.files[0];
+    
+    
+        let _URL = window.URL || window.webkitURL;
+    
+        let image = new Image();
+        let objectUrl = _URL.createObjectURL(file_grafika);
+    
+        image.onload = function () {
+            let height = this.height;
+            let width = this.width;
+            
+            if(height != 720 || width != 830){
+                
+                alert(`Niepoprawny wymiar pliku \noczek. wys: 720px\noczek. szer: 830px`);
+                event.target.value = '';
+                file_grafika = ''
+            }
+        }
+        image.src = objectUrl
+    })
+}
+
+
 
 /////////// PRZYCISKI USUWANIA //////////////////////////////////////////////////////////
 
@@ -579,7 +677,7 @@ document.querySelector('#nowe-haslo-but').addEventListener('click', () => {
 })
 
 
-/// USUWANIE HASLA 
+/// USUWANIE KOMUNIKATU ZLEJ ODPOWIEDZI
 
 let haslo_remove_buttons = document.querySelectorAll('.minusek');
 
@@ -609,3 +707,4 @@ for(button of haslo_remove_buttons){
         });
     })
 }
+

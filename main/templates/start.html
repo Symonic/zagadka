@@ -2,21 +2,19 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>Zagadka</title>
         <link rel="stylesheet" type='text/css' href="{% static 'css/index.css' %}">
     </head>
     <body>
         <div class="container">
-            <div id="start-header">
-                <img src="{{tyt.dokument.url}}" id="header-img" />
-            </div>
-            <div id="start-panel">
+            <div id="start-panel" style="background-image: url('{{tyt.dokument.url}}'">
                 <button style="background: url({{rozp.dokument.url}})" id="butt-rozpocznij"></button>
                 <p id="start-panel-text">{{napis_start}}</p>
-                <div id="start-panel-kod">
-                    <input type="text" id="kod-zagadki" /><button style="background: url({{submit.dokument.url}})" id="butt-next"/>
-                    
-                </div>
+                
+                <input type="text" id="kod-zagadki" />
+                <button style="background: url({{submit.dokument.url}})" id="butt-next"/>  
+                
                 <div id="server-info">
                 </div>
             </div>

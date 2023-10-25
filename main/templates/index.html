@@ -2,25 +2,31 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>Zagadka</title>
         <link rel="stylesheet" type='text/css' href="{% static 'css/index.css' %}">
     </head>
     <body>
         <div class="container">
             <div id="pytanie">
+                <div id="tresc-pytania">
+                </div>
+                <div id="przyciski-pytania">
+                    <input type="text" id="wprowadz" placeholder="Podaj odpowiedź"/>
+                    <button style="background: url({{submit.dokument.url}})" id="butt-next"/>
+                </div>
             </div>
             <div id="podpowiedz">
             </div>
             <div id="odpowiedz">
-                <input type="text" id="wprowadz" placeholder="Podaj odpowiedź"/>
-                <button style="background: url({{submit.dokument.url}})" id="butt-next"/>
+                
             </div>
             <div id="podpowiedzi">
                 <button style="background: url({{podp1.dokument.url}})" class="butt-podp" id="buttp1"/>
                 <button style="background: url({{podp2.dokument.url}})" class="butt-podp" id="buttp2"/>
             </div>
             <div id="div-pokaz">
-                <button id="but-pokaz-odp">Pokaz odpowiedź</button>
+                <button id="but-pokaz-odp" style="background: url({{odp.dokument.url}})"/>
             </div>
         </div>
 

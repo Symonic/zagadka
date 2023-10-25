@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.views.generic import CreateView
-from main.models import Zagadka, Plik_podp1, Plik_podp2, Plik_submit, Plik_graf_tyt, Plik_rozpocznij, Napisy, LosoweHasla
+from main.models import Zagadka, Plik_podp1, Plik_podp2, Plik_submit, Plik_graf_tyt, Plik_rozpocznij, Napisy, LosoweHasla, Plik_odp
 from main.forms import DokumentForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -39,8 +39,9 @@ class Main_view(CreateView):
             plik = Plik_podp1.objects.last()
             plik2 = Plik_podp2.objects.last()
             plik3 = Plik_submit.objects.last()
+            plik4 = Plik_odp.objects.last()
             napis_gratulacyjny = Napisy.objects.get(nazwa = "text_gratulacje")
-            return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3, "napis_gratulacje" : napis_gratulacyjny.tresc})
+            return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3, "odp": plik4, "napis_gratulacje" : napis_gratulacyjny.tresc})
         
 
 class Pobierz_zagadke(CreateView):
@@ -205,7 +206,7 @@ class Edytuj_zagadke(CreateView):
             zagadka.podp2 = request.POST['pole-podp2']
             zagadka.klucz_wejsciowy = request.POST['pole-kluczWe']
             zagadka.klucz_wynikowy = request.POST['pole-kluczWy']
-            #zagadka.grafika = request.FILES['pole-grafika']
+            zagadka.grafika = request.FILES['pole-grafika']
 
             zagadka.save()
 
@@ -344,6 +345,15 @@ class Nowa_Grafika(CreateView):
                 return HttpResponse(status = 201)
             except:
                 return HttpResponse(status = 409)
+            
+        elif(buttype == "odp"):
+            try:
+                nowy_plik = Plik_odp(dokument = request.FILES['docfile'])
+                print(nowy_plik)
+                nowy_plik.save()
+                return HttpResponse(status = 201)
+            except:
+                return HttpResponse(status = 409)
         
         elif(buttype == "starty"):
             try:
@@ -353,6 +363,7 @@ class Nowa_Grafika(CreateView):
                 return HttpResponse(status = 201)
             except:
                 return HttpResponse(status = 409)
+        
         
 
 class Gratulacje(CreateView):
