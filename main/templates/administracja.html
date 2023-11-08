@@ -12,50 +12,104 @@
                 <br />
                 <button id="butt-wylog">Wyloguj</button>
             </div>
+            <hr />
             <div id="wgrywanie">
-                Wgraj grafike startową:
-                <input type="file" id="prze-plik4"/>
-                <button id="butt-czysc4">Wyczyść</button>
-                <button id="butt-plik4">Prześlij</button>
+                Zarządzania stroną startową
+                <div id="display-graf-start" class="display-graf">
+                    Wgraj grafike startową:
+                    <input type="file" id="prze-plik4"/>
+                    <button id="butt-czysc4">Wyczyść</button>
+                    <button id="butt-plik4">Prześlij</button>
+                    <br />
+                    <img src="{{graf_tyt.dokument.url}}"  class="podglad-image"/>
+                    <p class="graf-url-par">{{graf_tyt.dokument.url}}</p>
+                </div>
 
-                Wgraj grafike do przycisku [Rozpocznij]:
-                <input type="file" id="prze-plik5"/>
-                <button id="butt-czysc5">Wyczyść</button>
-                <button id="butt-plik5">Prześlij</button>
+                <div id="display-graf-rozp" class="display-graf">
+                    Wgraj grafike do przycisku [Rozpocznij]:
+                    <input type="file" id="prze-plik5"/>
+                    <button id="butt-czysc5">Wyczyść</button>
+                    <button id="butt-plik5">Prześlij</button>
+                    <img src="{{graf_rozp.dokument.url}}"  id="podglad-image2"/>
+                    <p class="graf-url-par">{{graf_rozp.dokument.url}}</p>
+                </div>
 
-                Wgraj grafike do przycisku [Podpowiedz 1]:
-                <input type="file" id="prze-plik"/>
-                <button id="butt-czysc">Wyczyść</button>
-                <button id="butt-plik">Prześlij</button>
+                <div id="display-graf-start-next" class="display-graf">
+                    Wgraj grafike do przycisku [Rozpocznij po kodzie]:
+                    <input type="file" id="prze-plik7"/>
+                    <button id="butt-czysc7">Wyczyść</button>
+                    <button id="butt-plik7">Prześlij</button>
+                    <img src="{{graf_submit_kod.dokument.url}}"  id="podglad-image7"/>
+                    <p class="graf-url-par">{{graf_submit_kod.dokument.url}}</p>
+                </div>
 
-                Wgraj grafike do przycisku [Podpowiedz 2]:
-                <input type="file" id="prze-plik2"/>
-                <button id="butt-czysc2">Wyczyść</button>
-                <button id="butt-plik2">Prześlij</button>
+                <div id="text-start-edit">
+                    Ustaw text na stronie startowej:
+                    <img src="/media/images/rest/okno_start.png" id="start-img" />
+                    <input type="text" name="text-start" id="text-start" />
+                    <button id="but-start-text">Zatwierdź</button>
+                    <br />
+                    Aktualnie wgrany tekst:
+                    <br />
+                    {{text_start.tresc}}
+                </div>
 
-                Wgraj grafike do przycisku [Pokaz odpowiedź]:
-                <input type="file" id="prze-plik6"/>
-                <button id="butt-czysc6">Wyczyść</button>
-                <button id="butt-plik6">Prześlij</button>
+                <hr />
+                <br />
+                Zarządzanie widokiem zagadki
 
-                Wgraj grafike do przycisku [Zgadnij]:
-                <input type="file" id="prze-plik3"/>
-                <button id="butt-czysc3">Wyczyść</button>
-                <button id="butt-plik3">Prześlij</button>
+                <div id="display-graf-podp1" class="display-graf">
+                    Wgraj grafike do przycisku [Podpowiedz 1]:
+                    <input type="file" id="prze-plik"/>
+                    <button id="butt-czysc">Wyczyść</button>
+                    <button id="butt-plik">Prześlij</button>
+                    <br />
+                    <img src="{{graf_podp1.dokument.url}}"  id="podglad-image3"/>
+                    <p class="graf-url-par">{{graf_podp1.dokument.url}}</p>
+                </div>
+
+                <div id="display-graf-podp2" class="display-graf">
+                    Wgraj grafike do przycisku [Podpowiedz 2]:
+                    <input type="file" id="prze-plik2"/>
+                    <button id="butt-czysc2">Wyczyść</button>
+                    <button id="butt-plik2">Prześlij</button>
+                    <br />
+                    <img src="{{graf_podp2.dokument.url}}"  id="podglad-image4"/>
+                    <p class="graf-url-par">{{graf_podp2.dokument.url}}</p>
+                </div>
+
+                <div id="display-graf-odp" class="display-graf">
+                    Wgraj grafike do przycisku [Pokaz odpowiedź]:
+                    <input type="file" id="prze-plik6"/>
+                    <button id="butt-czysc6">Wyczyść</button>
+                    <button id="butt-plik6">Prześlij</button>
+                    <br />
+                    <img src="{{graf_odp.dokument.url}}"  id="podglad-image5"/>
+                    <p class="graf-url-par">{{graf_odp.dokument.url}}</p>
+                </div>
+
+                <div id="display-graf-zgadnij" class="display-graf">
+                    Wgraj grafike do przycisku [Zgadnij]:
+                    <input type="file" id="prze-plik3"/>
+                    <button id="butt-czysc3">Wyczyść</button>
+                    <button id="butt-plik3">Prześlij</button>
+                    <br />
+                    <img src="{{graf_zgadnij.dokument.url}}"  id="podglad-image6"/>
+                    <p class="graf-url-par">{{graf_zgadnij.dokument.url}}</p>
+                </div>
+
                 <p id="plik-info"></p>
                 
                 Ustaw text gratulacyjny:
                 <div id="gratulacje-edit">
                     <input type="text" name="text-gratulacje" id="text-gratulacje" />
                     <button id='but-grat-text'>Zatwierdź</button>
+                    <br />
+                    Aktualny tekst gratulacyjny:
+                    <br />
+                    {{text_gratulacje.tresc}}
                 </div>
                 
-                <div id="text-start-edit">
-                    Ustaw text na stronie startowej:
-                    <img src="/media/images/rest/okno_start.png" id="start-img" />
-                    <input type="text" name="text-start" id="text-start" />
-                    <button id="but-start-text">Zatwierdź</button>
-                </div>
                 <div id="div-losowe-hasla">
                     Lista losowych haseł nieprawidłowej odpowiedzi:
                     {% for haslo in hasla %}
@@ -110,9 +164,12 @@
                                     <input type = "text" name="pole-podp2" value = "{{zagadka.podp2}}"/>
                                     <input type = "text" name="pole-kluczWe" value = "{{zagadka.klucz_wejsciowy}}"/>
                                     <input type = "text" name="pole-kluczWy" value = "{{zagadka.klucz_wynikowy}}"/>
-                                    <input type = "file" name="pole-grafika" class ="file_zagadka_edit"/>
+                                    <input type = "file" name="pole-grafika" class ="file_zagadka_edit" id="edit-graf"/>
                                     <input type = "hidden" value="{{zagadka.id}}" name="pole-id" />
                                 </form>
+                                Aktualnie wgrana grafika:
+                                <img src="{{zagadka.grafika.url}}" class='podglad-image'/>
+                                <p class="graf-url-par">{{zagadka.grafika.url}}</p>
                             </div>
                         </div>
                         <div class="zagadka-icons">

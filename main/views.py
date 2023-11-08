@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.views.generic import CreateView
-from main.models import Zagadka, Plik_podp1, Plik_podp2, Plik_submit, Plik_graf_tyt, Plik_rozpocznij, Napisy, LosoweHasla, Plik_odp
+from main.models import Zagadka, Plik_podp1, Plik_podp2, Plik_submit, Plik_graf_tyt, Plik_rozpocznij, Napisy, LosoweHasla, Plik_odp, Plik_submit_kod
 from main.forms import DokumentForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -24,14 +24,14 @@ class Main_view(CreateView):
             request.session['id_zagadki'] = 0
             plik = Plik_graf_tyt.objects.last()
             plik2 = Plik_rozpocznij.objects.last()
-            plik3 = Plik_submit.objects.last()
+            plik3 = Plik_submit_kod.objects.last()
             napis_startowy = Napisy.objects.get(nazwa = "text_start")
             return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start" : napis_startowy.tresc})
 
         elif(request.session['id_zagadki'] == 0):
             plik = Plik_graf_tyt.objects.last()
             plik2 = Plik_rozpocznij.objects.last()
-            plik3 = Plik_submit.objects.last()
+            plik3 = Plik_submit_kod.objects.last()
             napis_startowy = Napisy.objects.get(nazwa = "text_start")
             return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start": napis_startowy.tresc})
         
@@ -41,7 +41,8 @@ class Main_view(CreateView):
             plik3 = Plik_submit.objects.last()
             plik4 = Plik_odp.objects.last()
             napis_gratulacyjny = Napisy.objects.get(nazwa = "text_gratulacje")
-            return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3, "odp": plik4, "napis_gratulacje" : napis_gratulacyjny.tresc})
+            print(napis_gratulacyjny.tresc, "to jest to")
+            return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3, "odp": plik4, "napis_gratulacje" : napis_gratulacyjny})
         
 
 class Pobierz_zagadke(CreateView):
@@ -206,7 +207,8 @@ class Edytuj_zagadke(CreateView):
             zagadka.podp2 = request.POST['pole-podp2']
             zagadka.klucz_wejsciowy = request.POST['pole-kluczWe']
             zagadka.klucz_wynikowy = request.POST['pole-kluczWy']
-            zagadka.grafika = request.FILES['pole-grafika']
+            if('pole-grafika' in request.FILES):
+                zagadka.grafika = request.FILES['pole-grafika']
 
             zagadka.save()
 
@@ -250,7 +252,31 @@ class Administracja(CreateView):
         if(request.user.is_authenticated):
             lista_zagadek = Zagadka.objects.all()
             lista_hasel = LosoweHasla.objects.all()
-            return render(request, 'administracja.html', {'zagadki': lista_zagadek, 'hasla': lista_hasel})
+
+            #grafiki do podgladu
+            Grafika_tytulowa = Plik_graf_tyt.objects.last()
+            Grafika_rozpocznij = Plik_rozpocznij.objects.last()
+            Grafika_podp1 = Plik_podp1.objects.last()
+            Grafika_podp2 = Plik_podp2.objects.last()
+            Grafika_odp = Plik_odp.objects.last()
+            Grafika_zgadnij = Plik_submit.objects.last()
+            Grafika_sumbit_kod = Plik_submit_kod.objects.last()
+
+            #napis gratulacyjny do podgladu
+            Napis_gratulacje = Napisy.objects.get(nazwa = 'text_gratulacje')
+            Napis_start = Napisy.objects.get(nazwa = "text_start")
+
+            return render(request, 'administracja.html', {'zagadki': lista_zagadek, 
+                                                          'hasla': lista_hasel,
+                                                          'graf_tyt' : Grafika_tytulowa,
+                                                          'graf_rozp': Grafika_rozpocznij,
+                                                          'graf_podp1': Grafika_podp1,
+                                                          'graf_podp2': Grafika_podp2,
+                                                          'graf_odp': Grafika_odp,
+                                                          'graf_zgadnij': Grafika_zgadnij,
+                                                          'text_gratulacje': Napis_gratulacje,
+                                                          'text_start': Napis_start,
+                                                          'graf_submit_kod': Grafika_sumbit_kod})
         else:
             return HttpResponse(status = 403)
 
@@ -360,6 +386,15 @@ class Nowa_Grafika(CreateView):
                 Napisy.objects.get(nazwa = request.POST['tytul']).delete()
                 nowy_napis = Napisy(nazwa = request.POST['tytul'], tresc = request.POST['tresc'])
                 nowy_napis.save()
+                return HttpResponse(status = 201)
+            except:
+                return HttpResponse(status = 409)
+            
+        elif(buttype == 'submitnext'):
+            try:
+                nowy_plik = Plik_submit_kod(dokument = request.FILES['docfile'])
+                print(nowy_plik)
+                nowy_plik.save()
                 return HttpResponse(status = 201)
             except:
                 return HttpResponse(status = 409)

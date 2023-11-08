@@ -23,7 +23,7 @@ document.querySelector('#butt-rozpocznij').addEventListener('click', () => {
                 
 })
 
-document.querySelector('#butt-next').addEventListener('click', () => {
+document.querySelector('#butt-next2').addEventListener('click', () => {
     const klucz_wejsciowy = document.querySelector('#kod-zagadki').value;
 
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -35,9 +35,8 @@ document.querySelector('#butt-next').addEventListener('click', () => {
                     body : JSON.stringify(data)
                 }).then(response => response.json()).then(data => {
                     if(data.serverresp == "niepowodzenie"){
-                        document.querySelector('#server-info').innerHTML = `
-                        <p>Nie udało się znaleźć zagadki o podanym kodzie!</p>
-                        `
+                        document.querySelector(".par-odp").innerHTML = `Nie udało się znaleźć zagadki o takim kodzie.`
+                        document.querySelector(".par-odp").classList.add('par-odp-darken');
                     }
                     else{
                         location.reload();

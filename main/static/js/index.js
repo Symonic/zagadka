@@ -94,7 +94,8 @@ async function pobierz_zagadke(){
         document.querySelector('#butt-potw-tak').addEventListener('click', () => {
             body.removeChild(body.lastChild);
             container.classList.toggle('container-darken')
-            document.querySelector("#podpowiedz").innerHTML = `Podpowiedź: ${odp1}`
+            document.querySelector(".par-odp").innerHTML = `Podpowiedź: ${odp1}`
+            document.querySelector(".par-odp").classList.add('par-odp-darken');
             
             sessionStorage.setItem('podp1', 'uzyte');
             if(kod_podsumowania==1){
@@ -146,7 +147,8 @@ async function pobierz_zagadke(){
         document.querySelector('#butt-potw-tak').addEventListener('click', () => {
             body.removeChild(body.lastChild);
             container.classList.toggle('container-darken')
-            document.querySelector("#podpowiedz").innerHTML = `Podpowiedź: ${odp2}`
+            document.querySelector(".par-odp").innerHTML = `Podpowiedź: ${odp2}`
+            document.querySelector(".par-odp").classList.add('par-odp-darken');
         
             sessionStorage.setItem('podp2', 'uzyte');
             if(kod_podsumowania==1){
@@ -200,7 +202,7 @@ async function pobierz_zagadke(){
                 let sekundy = 10;
 
                 let x = setInterval(function(){
-                    document.querySelector('#okno').innerHTML = `
+                    document.querySelector('#okno-gratulacje').innerHTML = `
                     ${minuty}:${sekundy}
                     `
                     if(sekundy>0){
@@ -215,7 +217,8 @@ async function pobierz_zagadke(){
                         clearInterval(x)
                         body.removeChild(body.lastChild);
                         container.classList.toggle('container-darken')
-                        document.querySelector("#podpowiedz").innerHTML = `Odpowiedź: ${odpowiedz}`
+                        document.querySelector(".par-odp").innerHTML = `Odpowiedź: ${odpowiedz}`
+                        document.querySelector(".par-odp").classList.add('par-odp-darken');
         
                         sessionStorage.setItem('odp', 'uzyte');
                         if(kod_podsumowania==1){
@@ -239,6 +242,13 @@ async function pobierz_zagadke(){
         })
     })
 
+    document.querySelector('#wprowadz').addEventListener('keypress', (event) => {
+        if(event.key === 'Enter'){
+            event.preventDefault();
+            document.querySelector('#butt-next').click();
+        }
+    })
+
     // OBSŁUGA PRZYCISKU DALEJ
     document.querySelector('#butt-next').addEventListener('click', () => {
         let wartosc = document.querySelector("#wprowadz").value;
@@ -253,7 +263,8 @@ async function pobierz_zagadke(){
             let container = document.querySelector(".container");
             let body = document.querySelector("body");
             
-            let napis_grat = document.querySelector('#paragraf-gratulacje').value;
+            let napis_grat = document.querySelector('#gratulacje').innerText;
+            console.log(napis_grat)
             okno.setAttribute('id', 'okno-gratulacje');
             okno.innerHTML = `
                 <p id="paragraf-gratulacje">${napis_grat}</p>
@@ -333,12 +344,13 @@ async function pobierz_zagadke(){
             })
         }
         else{
-            let okno_wiadomosci = document.querySelector('#podpowiedz');
+            let okno_wiadomosci = document.querySelector('.par-odp');
             let numer = Math.floor(Math.random()*8)           
 
             okno_wiadomosci.innerHTML = `
             ${hasla[numer]}
             `
+            okno_wiadomosci.classList.add('par-odp-darken')
         }
     })
 

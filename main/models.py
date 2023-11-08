@@ -30,9 +30,13 @@ class Plik_rozpocznij(models.Model):
 class Plik_odp(models.Model):
     dokument = models.FileField(upload_to='images/odp')
 
+class Plik_submit_kod(models.Model):
+    dokument = models.FileField(upload_to='images/submit_kod')
+
 class Napisy(models.Model):
     nazwa = models.CharField(max_length=50)
     tresc = models.CharField(max_length=200)
 
 class LosoweHasla(models.Model):
     tresc = models.CharField(max_length=200)
+

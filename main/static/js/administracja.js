@@ -1,11 +1,12 @@
-let fileinput = document.querySelector("#prze-plik");
+let fileinput = document.querySelector("#prze-plik")
 let fileinput2 = document.querySelector("#prze-plik2")
 let fileinput3 = document.querySelector('#prze-plik3')
 let fileinput4 = document.querySelector('#prze-plik4')
 let fileinput5 = document.querySelector('#prze-plik5')
 let fileinput6 = document.querySelector('#prze-plik6')
+let fileinput7 = document.querySelector('#prze-plik7')
 
-let file = '', file2 = '', file3 = '', file4 = '', file5 = '', file6 = '';
+let file = '', file2 = '', file3 = '', file4 = '', file5 = '', file6 = '', file7 = '';
 
 fileinput.addEventListener('change', () => {
     file = fileinput.files[0];
@@ -117,9 +118,9 @@ fileinput5.addEventListener('change', () => {
         let height = this.height;
         let width = this.width;
         
-        if(height > 100 || width > 300){
+        if(height != 66 || width != 58){
             
-            alert(`Niepoprawny wymiar pliku \nmax. wys: 100px\nmax. szer: 300px`);
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 66px\nmax. szer: 58px`);
             fileinput5.value = '';
             file5 = ''
         }
@@ -146,6 +147,30 @@ fileinput6.addEventListener('change', () => {
             alert(`Niepoprawny wymiar pliku \noczek. wys: 150px\nmax. szer: 66px`);
             fileinput6.value = '';
             file6 = ''
+        }
+    }
+    image.src = objectUrl
+})
+
+fileinput7.addEventListener('change', () => {
+    file7 = fileinput7.files[0];
+
+    console.log(file7.size);
+
+    let _URL = window.URL || window.webkitURL;
+
+    let image = new Image();
+    let objectUrl = _URL.createObjectURL(file7);
+
+    image.onload = function () {
+        let height = this.height;
+        let width = this.width;
+        
+        if(height !=66 || width != 150){
+            
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 150px\nmax. szer: 66px`);
+            fileinput7.value = '';
+            file7 = ''
         }
     }
     image.src = objectUrl
@@ -180,6 +205,11 @@ document.querySelector('#butt-czysc5').addEventListener('click', () => {
 document.querySelector('#butt-czysc6').addEventListener('click', () => {
     fileinput6.value = '';
     file6 = ''
+})
+
+document.querySelector('#butt-czysc7').addEventListener('click', () => {
+    fileinput7.value = '';
+    file7 = ''
 })
 
 document.querySelector("#butt-plik").addEventListener('click', () => {
@@ -272,6 +302,21 @@ document.querySelector("#butt-plik6").addEventListener('click', () => {
     
 })
 
+document.querySelector("#butt-plik7").addEventListener('click', () => {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const formData = new FormData();
+    console.log('pressed')
+    if(file7 != ''){
+        formData.append("docfile", file7);
+        fetch('nowa_graf/submitnext/', {
+            method: "POST",
+            headers: {'X-CSRFToken': csrftoken},
+            body: formData
+        })
+    }
+    
+})
+
 document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     let nowa_zagadka = document.querySelector("#zagadka-content-nowa");
     let form = document.createElement('form');
@@ -312,29 +357,6 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     pole_grafika.setAttribute("placeholder", "grafika");
     let file_grafika = ''
 
-    pole_grafika.addEventListener('change', () => {
-        file_grafika = pole_grafika.files[0];
-    
-    
-        let _URL = window.URL || window.webkitURL;
-    
-        let image = new Image();
-        let objectUrl = _URL.createObjectURL(file_grafika);
-    
-        image.onload = function () {
-            let height = this.height;
-            let width = this.width;
-            
-            if(height != 830 || width != 720){
-                
-                alert(`Niepoprawny wymiar pliku \noczek. wys: 830px\noczek. szer: 720px`);
-                pole_grafika.value = '';
-                file_grafika = ''
-            }
-        }
-        image.src = objectUrl
-    })
-
     let submit = document.createElement('button');
     submit.setAttribute('id', 'form-submit');
     submit.innerText = "Utwórz";
@@ -354,6 +376,36 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     Klucz wyjściowy <br />
     Plik Grafiki: 
     `
+
+    pole_grafika.addEventListener('change', (event) => {
+        file_grafika = pole_grafika.files[0];
+    
+    
+        let _URL = window.URL || window.webkitURL;
+    
+        let image = new Image();
+        let objectUrl = _URL.createObjectURL(file_grafika);
+    
+        image.onload = function () {
+            let height = this.height;
+            let width = this.width;
+            
+            if(height != 720 || width != 830){
+                
+                alert(`Niepoprawny wymiar pliku \noczek. wys: 720px\noczek. szer: 830px`);
+                pole_grafika.value = '';
+                file_grafika = ''
+            }
+            else{
+                image.classList.add('podglad-image')
+                form_square.appendChild(image)
+            }
+        }
+        image.src = objectUrl
+        console.log(event.target.value);
+    })
+
+    
 
     let br = new Array(6);
     for(let i=0; i<6;i++){
@@ -429,7 +481,7 @@ for(button of edit_buttons){
 
         let submit = document.createElement('button');
         submit.setAttribute('id', 'form-edit');
-        submit.innerText = "Zmień";
+        submit.innerText = "Zatwierdź zmiany";
         child.appendChild(submit);
 
         
@@ -456,35 +508,12 @@ for(button of edit_buttons){
         
         submit.addEventListener('click', () => {
 
-            let okno = document.createElement('div');
-            let container = document.querySelector(".container2");
-            let body = document.querySelector("body");
-            
-            okno.setAttribute('id', 'okno');
-            okno.innerHTML = `
-                <p id="czy_na_pewno">Czy na pewno chcesz edytować te dane?</p>
-                <div id="przyciski_tak_nie">
-                <button id="butt-potw-tak">tak</button>
-                <button id="butt-potw-nie">nie</button>
-                </div>
-            `
-    
-            container.classList.toggle('container-darken');
-            document.querySelector("body").appendChild(okno);
-    
-    
-            // obsługa przycisku NIE ////////////////////////////////////////////////////////////////////////////////////////
-            document.querySelector("#butt-potw-nie").addEventListener('click', () => {
-                body.removeChild(body.lastChild);
-                container.classList.toggle('container-darken');
-            })
-    
             // obsługa przycisku TAK ////////////////////////////////////////////////////////////////////////////////////////
-            document.querySelector('#butt-potw-tak').addEventListener('click', () => {
-                body.removeChild(body.lastChild);
-                container.classList.toggle('container-darken')
-
+            if(confirm('Czy na pewno chcesz edytować te dane?')){
                 const form = child.children[0]
+                if(form.children[6].value == ''){
+                    form.removeChild(form.children[6])
+                }
                 const data = new FormData(form)
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     
@@ -500,7 +529,9 @@ for(button of edit_buttons){
                     location.reload()
                 })
                 
-            })
+            }else{
+                console.log("Nie edytowano")
+            }
         })
     })
 }
@@ -542,34 +573,10 @@ let remove_buttons = document.querySelectorAll('.remove');
 
 for (button of remove_buttons){
     button.addEventListener('click', (event) => {
-        let okno = document.createElement('div');
-        let container = document.querySelector(".container2");
-        let body = document.querySelector("body");
         
-        okno.setAttribute('id', 'okno');
-        okno.innerHTML = `
-            <p id="czy_na_pewno">Czy na pewno chcesz usunąć tą zagadkę?</p>
-            <div id="przyciski_tak_nie">
-            <button id="butt-potw-tak">tak</button>
-            <button id="butt-potw-nie">nie</button>
-            </div>
-        `
-
-        container.classList.toggle('container-darken');
-        document.querySelector("body").appendChild(okno);
-
-
-        // obsługa przycisku NIE ////////////////////////////////////////////////////////////////////////////////////////
-        document.querySelector("#butt-potw-nie").addEventListener('click', () => {
-            body.removeChild(body.lastChild);
-            container.classList.toggle('container-darken');
-        })
 
         // obsługa przycisku TAK ////////////////////////////////////////////////////////////////////////////////////////
-        document.querySelector('#butt-potw-tak').addEventListener('click', () => {
-            body.removeChild(body.lastChild);
-            container.classList.toggle('container-darken')
-
+        if(confirm('Czy na pewno chcesz usunąć tą zagadkę?')){
             const grandParent = event.target.parentElement.parentElement
             let grandchild = grandParent.children[0]
             let child = grandchild.children[2]
@@ -583,7 +590,9 @@ for (button of remove_buttons){
                 headers: {'X-CSRFToken': csrftoken},
                 body: data
             }).then(response => location.reload())
-        })  
+        }else{
+            console.log("Nie usunięto")
+        } 
     })
 }
 

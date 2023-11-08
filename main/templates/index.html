@@ -17,9 +17,9 @@
                 </div>
             </div>
             <div id="podpowiedz">
+                <p class="par-odp"></p>
             </div>
             <div id="odpowiedz">
-                
             </div>
             <div id="podpowiedzi">
                 <button style="background: url({{podp1.dokument.url}})" class="butt-podp" id="buttp1"/>
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <input type='hidden' id="paragraf-gratulacje" value={{napis_gratulacje}} />
+        <p id="gratulacje">{{napis_gratulacje.tresc}}</p>
 
     </body>
     {% csrf_token %}
