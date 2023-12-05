@@ -2,40 +2,74 @@ let odpowiedz, odp1, odp2, koniec, kl_wej, kl_wyj
 let hasla = new Array(100);
 
 async function pobierz_zagadke(){
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    let data = { up : 10 }
-    await fetch('pobierz_zagadke/', {
-        method : "POST", 
-        headers: {'X-CSRFToken': csrftoken},
-        mode: 'same-origin',
-        body : JSON.stringify(data)
-    }).then(result => result.json()).then(data => {
-        let pyt = document.createElement('p');
-        pyt.setAttribute('id', 'par-pyt');
-        pyt.innerHTML = `${data.tresc}`
-        document.querySelector('#tresc-pytania').appendChild(pyt);
-        let cont = document.querySelector('.container');
-        cont.style.backgroundImage=`url("/media/${data.grafika}")`;
-        //<img src="/media/${data.grafika}" /><br />
+    
+    // SPRAWDZENIE CZY PRZYPADKIEM DO LINKU NIE JEST DOKLEJONY KLUCZ ZAGADKI
+    let link_klucz = document.querySelector('#kod_wejsciowy_par').innerText
+    console.log("to jest to: "+link_klucz )
 
-        odpowiedz = data.odpowiedz
-        odp1 = data.podp1
-        odp2 = data.podp2
-        koniec = data.koniec
-        kl_wej = data.klucz_wejsciowy
-        kl_wyj = data.klucz_wynikowy
-    })
-
-    await fetch('haslo/pobierz/', {
-        method : "GET",
-        headers : {'X-CSRFToken': csrftoken},
-        mode: 'same-origin',
-    }).then(result => result.json()).then(data => {
-        for(let i=0;i<data.length;i++){
-            hasla[i] = data[i].fields.tresc;
-        }
-    })
-    //ukonczenie()
+    if(link_klucz != 'brak'){
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                let data = { up : link_klucz } 
+                fetch('/pobierz_zagadke/', {
+                    method : "POST", 
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
+                    body : JSON.stringify(data)
+                }).then(result => result.json()).then(data => {
+                    let pyt = document.createElement('p');
+                    pyt.setAttribute('id', 'par-pyt');
+                    pyt.innerHTML = `${data.tresc}`
+                    document.querySelector('#tresc-pytania').appendChild(pyt);
+                    let cont = document.querySelector('.container');
+                    cont.style.backgroundImage=`url("/media/${data.grafika}")`;
+                    //<img src="/media/${data.grafika}" /><br />
+            
+                    odpowiedz = data.odpowiedz
+                    odp1 = data.podp1
+                    odp2 = data.podp2
+                    koniec = data.koniec
+                    kl_wej = data.klucz_wejsciowy
+                    kl_wyj = data.klucz_wynikowy
+                })
+                //link_klucz = 'brak'
+    }
+    else{
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        let data = { up : 10 }
+        await fetch('/pobierz_zagadke/', {
+            method : "POST", 
+            headers: {'X-CSRFToken': csrftoken},
+            mode: 'same-origin',
+            body : JSON.stringify(data)
+        }).then(result => result.json()).then(data => {
+            let pyt = document.createElement('p');
+            pyt.setAttribute('id', 'par-pyt');
+            pyt.innerHTML = `${data.tresc}`
+            document.querySelector('#tresc-pytania').appendChild(pyt);
+            let cont = document.querySelector('.container');
+            cont.style.backgroundImage=`url("/media/${data.grafika}")`;
+            //<img src="/media/${data.grafika}" /><br />
+    
+            odpowiedz = data.odpowiedz
+            odp1 = data.podp1
+            odp2 = data.podp2
+            koniec = data.koniec
+            kl_wej = data.klucz_wejsciowy
+            kl_wyj = data.klucz_wynikowy
+        })
+    
+        await fetch('haslo/pobierz/', {
+            method : "GET",
+            headers : {'X-CSRFToken': csrftoken},
+            mode: 'same-origin',
+        }).then(result => result.json()).then(data => {
+            for(let i=0;i<data.length;i++){
+                hasla[i] = data[i].fields.tresc;
+            }
+        })
+        //ukonczenie()
+    }
+    
 }
     //document.querySelector('#pytanie').innerHTML = zagadka.tresc
     pobierz_zagadke()
@@ -199,7 +233,7 @@ async function pobierz_zagadke(){
         // obsługa przycisku TAK ////////////////////////////////////////////////////////////////////////////////////////
         document.querySelector('#butt-potw-tak').addEventListener('click', (event) => {
                 let minuty = 0;
-                let sekundy = 10;
+                let sekundy = 5;
 
                 let x = setInterval(function(){
                     document.querySelector('#okno-gratulacje').innerHTML = `
@@ -213,7 +247,7 @@ async function pobierz_zagadke(){
                         minuty--;
                     }
 
-                    if(minuty==0 && sekundy ==0){
+                    if(minuty==0 && sekundy==0){
                         clearInterval(x)
                         body.removeChild(body.lastChild);
                         container.classList.toggle('container-darken')
@@ -253,7 +287,7 @@ async function pobierz_zagadke(){
     document.querySelector('#butt-next').addEventListener('click', () => {
         let wartosc = document.querySelector("#wprowadz").value;
         console.log(kl_wyj);
-        if (wartosc == odpowiedz){
+        if (wartosc.toLowerCase() == odpowiedz.toLowerCase()){
             console.log("Poprawna odpowiedz");
 
 
@@ -397,3 +431,6 @@ async function pobierz_zagadke(){
 
         
     }
+
+
+    

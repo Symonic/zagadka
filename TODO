@@ -2,3 +2,4 @@ NAPRAWIĆ PODSUMOWANIE ZAGADEK:
 
 !!!  po wyjściu do strony głównej i powrotu do rozwiązywania pamięc ulega utracie !!!!!
 
+clearInterval nie clearuje w odliczaniu po pokazaniu odpowiedzi

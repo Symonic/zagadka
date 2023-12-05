@@ -3,7 +3,8 @@ from django.db import models
 # Create your models here.
 
 class Zagadka(models.Model):
-    tresc = models.CharField(max_length=50)
+    nazwa = models.CharField(max_length=50, default="brak_nazwy")
+    tresc = models.CharField(max_length=100)
     odpowiedz = models.CharField(max_length=50)
     podp1 = models.CharField(max_length=50)
     podp2 = models.CharField(max_length=50)

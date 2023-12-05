@@ -3,10 +3,12 @@ from django.urls import path, re_path
 from main.views import Main_view, Pobierz_zagadke, Logowanie, Administracja
 from main.views import Logout, Nowa_Grafika, Edytuj_zagadke, Usun_zagadke
 from main.views import Utworz_zagadke, Gratulacje, Dodaj_haslo, Usun_haslo, Pobierz_hasla
+from main.views import Main_view_specified
 #from main.views import Zaktualizuj_numer
 
 urlpatterns = [
     path('', Main_view.as_view()),
+    re_path(r'^zagadka/(?P<zagnazwa>[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(\d+)?)$',Main_view_specified.as_view()),
     path('pobierz_zagadke/', Pobierz_zagadke.as_view()),
     path('pobierz_zagadke/edit', Edytuj_zagadke.as_view()),
     path('pobierz_zagadke/remove', Usun_zagadke.as_view()),

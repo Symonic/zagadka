@@ -321,6 +321,11 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     let nowa_zagadka = document.querySelector("#zagadka-content-nowa");
     let form = document.createElement('form');
 
+    let pole_nazwa = document.createElement('input');
+    pole_nazwa.setAttribute("type", "text");
+    pole_nazwa.setAttribute("name", "pole-nazwa");
+    pole_nazwa.setAttribute("placeholder", "Nazwa zagadki");
+
     let pole_tresc = document.createElement('input');
     pole_tresc.setAttribute("type", "text");
     pole_tresc.setAttribute("name", "pole-tresc");
@@ -368,6 +373,7 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
     label_square.setAttribute('id', 'label-square');
 
     label_square.innerHTML = `
+    Nazwa <br />
     Treść <br />
     Odpowiedź <br />
     Podpowiedź 1 <br />
@@ -407,24 +413,26 @@ document.querySelector("#nowa-zag-butt").addEventListener('click', () => {
 
     
 
-    let br = new Array(6);
+    let br = new Array(7);
     for(let i=0; i<6;i++){
         br[i] = document.createElement('br');
     }
     
 
-    form.append(pole_tresc);
+    form.append(pole_nazwa);
     form.append(br[0]);
-    form.append(pole_odpowiedz);
+    form.append(pole_tresc);
     form.append(br[1]);
-    form.append(pole_podp1);
+    form.append(pole_odpowiedz);
     form.append(br[2]);
-    form.append(pole_podp2);
+    form.append(pole_podp1);
     form.append(br[3]);
-    form.append(pole_kluczWe);
+    form.append(pole_podp2);
     form.append(br[4]);
-    form.append(pole_kluczWy);
+    form.append(pole_kluczWe);
     form.append(br[5]);
+    form.append(pole_kluczWy);
+    form.append(br[6]);
     form.append(pole_grafika);
     
     form_square.appendChild(form);

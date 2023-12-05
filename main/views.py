@@ -42,8 +42,40 @@ class Main_view(CreateView):
             plik4 = Plik_odp.objects.last()
             napis_gratulacyjny = Napisy.objects.get(nazwa = "text_gratulacje")
             print(napis_gratulacyjny.tresc, "to jest to")
-            return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3, "odp": plik4, "napis_gratulacje" : napis_gratulacyjny})
+            return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3, "odp": plik4, "napis_gratulacje" : napis_gratulacyjny, "zagnazwa" : "brak" })
+
+
+
+
+class Main_view_specified(CreateView):
+    def get(self, request, zagnazwa, *args, **kwargs):
+
+        #print(request.session['id_zagadki'])
+        if('id_zagadki' not in request.session ):
+            request.session['id_zagadki'] = 0
+            plik = Plik_graf_tyt.objects.last()
+            plik2 = Plik_rozpocznij.objects.last()
+            plik3 = Plik_submit_kod.objects.last()
+            napis_startowy = Napisy.objects.get(nazwa = "text_start")
+            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start" : napis_startowy.tresc})
+
+        elif(request.session['id_zagadki'] == 0):
+            plik = Plik_graf_tyt.objects.last()
+            plik2 = Plik_rozpocznij.objects.last()
+            plik3 = Plik_submit_kod.objects.last()
+            napis_startowy = Napisy.objects.get(nazwa = "text_start")
+            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start": napis_startowy.tresc})
         
+        else:
+            plik = Plik_podp1.objects.last()
+            plik2 = Plik_podp2.objects.last()
+            plik3 = Plik_submit.objects.last()
+            plik4 = Plik_odp.objects.last()
+            napis_gratulacyjny = Napisy.objects.get(nazwa = "text_gratulacje")
+            print(napis_gratulacyjny.tresc, "to jest to")
+            return render(request, 'index.html', {"podp1": plik, "podp2": plik2, "submit": plik3, "odp": plik4, "napis_gratulacje" : napis_gratulacyjny, "zagnazwa" : zagnazwa })
+   
+            
 
 class Pobierz_zagadke(CreateView):
     #def get(self, request, *args, **kwargs):
@@ -180,6 +212,7 @@ class Pobierz_zagadke(CreateView):
 class Utworz_zagadke(CreateView):
     def post(self, request, *args, **kwargs):
         if(request.user.is_authenticated):
+                nazwa = request.POST['pole-nazwa']
                 tresc = request.POST['pole-tresc']
                 odpowiedz = request.POST['pole-odpowiedz']
                 podp1 = request.POST['pole-podp1']
@@ -188,7 +221,7 @@ class Utworz_zagadke(CreateView):
                 kl_wyj = request.POST['pole-kluczWy']
                 grafika = request.FILES['pole-grafika']
 
-                zagadka = Zagadka(tresc = tresc, odpowiedz = odpowiedz, podp1 = podp1,
+                zagadka = Zagadka(nazwa = nazwa, tresc = tresc, odpowiedz = odpowiedz, podp1 = podp1,
                                podp2 = podp2, klucz_wejsciowy = kl_wej, klucz_wynikowy = kl_wyj, grafika = grafika)
                 zagadka.save()
 
@@ -201,6 +234,7 @@ class Edytuj_zagadke(CreateView):
             id = request.POST['pole-id']
             zagadka = Zagadka.objects.get(id=id)
 
+            zagadka.nazwa = request.POST['pole-nazwa']
             zagadka.tresc = request.POST['pole-tresc']
             zagadka.odpowiedz = request.POST['pole-odpowiedz']
             zagadka.podp1 = request.POST['pole-podp1']

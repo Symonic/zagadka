@@ -145,9 +145,10 @@
                     <div class="zagadka">
                         <div class="zagadka-content">
                             <div id="utworz-tekst-div">
-                                {{zagadka.tresc}}
+                                {{zagadka.nazwa}}
                             </div>
                             <div id="label-square" class="edit-form-hidden">
+                                Nazwa <br />
                                 Treść <br />
                                 Odpowiedź <br />
                                 Podpowiedź 1 <br />
@@ -158,6 +159,7 @@
                             </div>
                             <div id="form-square" class="edit-form-hidden">
                                 <form>
+                                    <input type = "text" name="pole-nazwa" value = "{{zagadka.nazwa}}" />
                                     <input type = "text" name="pole-tresc" value = "{{zagadka.tresc}}"/>
                                     <input type = "text" name="pole-odpowiedz" value = "{{zagadka.odpowiedz}}"/>
                                     <input type = "text" name="pole-podp1" value = "{{zagadka.podp1}}"/>
