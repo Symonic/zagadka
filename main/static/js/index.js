@@ -31,9 +31,9 @@ async function pobierz_zagadke(){
                     kl_wej = data.klucz_wejsciowy
                     kl_wyj = data.klucz_wynikowy
                 })
-                //link_klucz = 'brak'
+                location.replace('/')
     }
-    else{
+    
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         let data = { up : 10 }
         await fetch('/pobierz_zagadke/', {
@@ -68,7 +68,7 @@ async function pobierz_zagadke(){
             }
         })
         //ukonczenie()
-    }
+    
     
 }
     //document.querySelector('#pytanie').innerHTML = zagadka.tresc
