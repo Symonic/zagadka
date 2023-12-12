@@ -189,6 +189,7 @@ class Pobierz_zagadke(CreateView):
         podp2 = zagadka.podp2
         kl_wyn = zagadka.klucz_wynikowy
         grafika = str(zagadka.grafika)
+        numer_zag = zagadka.numer
         
         if(request.session['czy_ostatnia']):
             koniec = True
@@ -206,6 +207,7 @@ class Pobierz_zagadke(CreateView):
             "serverresp" : "powodzenie",
             "klucz_wynikowy" : kl_wyn,
             "grafika" : grafika, 
+            "numer_zag": numer_zag
         }
         return JsonResponse(context)
 
@@ -224,6 +226,11 @@ class Utworz_zagadke(CreateView):
                 zagadka = Zagadka(nazwa = nazwa, tresc = tresc, odpowiedz = odpowiedz, podp1 = podp1,
                                podp2 = podp2, klucz_wejsciowy = kl_wej, klucz_wynikowy = kl_wyj, grafika = grafika)
                 zagadka.save()
+
+                wszystkie_zagadki = Zagadka.objects.all()
+                for i, zagadka in enumerate(wszystkie_zagadki):
+                    zagadka.numer = i+1
+                    zagadka.save()
 
         
                 return HttpResponse(status=200)
@@ -246,6 +253,11 @@ class Edytuj_zagadke(CreateView):
 
             zagadka.save()
 
+            wszystkie_zagadki = Zagadka.objects.all()
+            for i, zagadka in enumerate(wszystkie_zagadki):
+                zagadka.numer = i+1
+                zagadka.save()
+
             return JsonResponse({"odpowiedz" : "Pomyślnie edytowano!"})
 
         return JsonResponse({"odpowiedz" : "Nie udało się edytować!"})
@@ -256,7 +268,12 @@ class Usun_zagadke(CreateView):
             id = request.POST['pole-id']
             zagadka = Zagadka.objects.get(id=id)
             zagadka.delete()
-            Zagadka.objects.raw("DBCC CHECKIDENT('main_zagadka', RESEED, 0)")
+            
+            wszystkie_zagadki = Zagadka.objects.all()
+            for i, zagadka in enumerate(wszystkie_zagadki):
+                zagadka.numer = i+1
+                zagadka.save()
+
             return JsonResponse({'odpowiedz' : 'Usunięto pomyślnie'})
         
         return JsonResponse({'odpowiedz' : 'Nie udało się usunąć!'})

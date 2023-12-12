@@ -1,4 +1,4 @@
-let odpowiedz, odp1, odp2, koniec, kl_wej, kl_wyj
+let odpowiedz, odp1, odp2, koniec, kl_wej, kl_wyj, numer_zagadki
 let hasla = new Array(100);
 
 async function pobierz_zagadke(){
@@ -30,6 +30,7 @@ async function pobierz_zagadke(){
                     koniec = data.koniec
                     kl_wej = data.klucz_wejsciowy
                     kl_wyj = data.klucz_wynikowy
+                    numer_zagadki = data.numer_zag
                 })
                 location.replace('/')
     }
@@ -56,6 +57,7 @@ async function pobierz_zagadke(){
             koniec = data.koniec
             kl_wej = data.klucz_wejsciowy
             kl_wyj = data.klucz_wynikowy
+            numer_zagadki = data.numer_zag
         })
     
         await fetch('haslo/pobierz/', {
@@ -70,11 +72,7 @@ async function pobierz_zagadke(){
         //ukonczenie()
     
     
-}
-    //document.querySelector('#pytanie').innerHTML = zagadka.tresc
-    pobierz_zagadke()
 
-    
     /// KODY PODSUMOWANIA ////////////////////////////
     //                                              //
     //      1 - brak podpowiedzi                    //
@@ -88,15 +86,22 @@ async function pobierz_zagadke(){
 
     /// SPRAWDZANIE SESJI pod kątem uzytych podpowiedzi
 
-    numer_zagadki = sessionStorage.getItem('nr_zagadki');
-    kod_podsumowania = sessionStorage.getItem(`z${numer_zagadki}`);
-    console.log('numer_zagadki : '+ numer_zagadki);
-    console.log(sessionStorage.getItem(`z${numer_zagadki}`))
-    console.log(sessionStorage.getItem('podp1'));
-    console.log(sessionStorage.getItem('podp2'));
-    console.log(sessionStorage.getItem('odp'));
+    
 
     ///
+
+        kod_podsumowania = sessionStorage.getItem(`z${numer_zagadki}`);
+        console.log('numer_zagadki : '+ numer_zagadki);
+        console.log(sessionStorage.getItem(`z${numer_zagadki}`))
+        console.log(sessionStorage.getItem('podp1'));
+        console.log(sessionStorage.getItem('podp2'));
+        console.log(sessionStorage.getItem('odp'));
+}
+    //document.querySelector('#pytanie').innerHTML = zagadka.tresc
+    pobierz_zagadke()
+
+    
+  
 
 
     // PODPOWIEDZ 1
