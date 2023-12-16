@@ -26,14 +26,16 @@ class Main_view(CreateView):
             plik2 = Plik_rozpocznij.objects.last()
             plik3 = Plik_submit_kod.objects.last()
             napis_startowy = Napisy.objects.get(nazwa = "text_start")
-            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start" : napis_startowy.tresc})
+            ile_zagadek = Zagadka.objects.all().count()
+            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start" : napis_startowy.tresc, "ile_zagadek" : ile_zagadek})
 
         elif(request.session['id_zagadki'] == 0):
             plik = Plik_graf_tyt.objects.last()
             plik2 = Plik_rozpocznij.objects.last()
             plik3 = Plik_submit_kod.objects.last()
             napis_startowy = Napisy.objects.get(nazwa = "text_start")
-            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start": napis_startowy.tresc})
+            ile_zagadek = Zagadka.objects.all().count()
+            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start": napis_startowy.tresc, "ile_zagadek": ile_zagadek})
         
         else:
             plik = Plik_podp1.objects.last()
@@ -454,7 +456,8 @@ class Nowa_Grafika(CreateView):
 
 class Gratulacje(CreateView):
     def get(self, request, *args, **kwargs):
-        return render(request, 'gratulacje.html')
+        ile_zagadek = Zagadka.objects.all().count()
+        return render(request, 'gratulacje.html', {"ile_zagadek" : ile_zagadek})
     
 class Pobierz_hasla(CreateView):
     def get(self, request, *args, **kwargs):

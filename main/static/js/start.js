@@ -1,12 +1,19 @@
 sessionStorage.setItem('nr_zagadki', 1);
 console.log(sessionStorage.getItem('nr_zagadki'));
 
-sessionStorage.setItem(`z1`, 1);
+//sessionStorage.setItem(`z1`, 1);
 console.log(sessionStorage.getItem('z1'));
 
 sessionStorage.setItem('podp1', 'nieuzyte');
 sessionStorage.setItem('podp2', 'nieuzyte');
 sessionStorage.setItem('odp', 'nieuzyte');
+
+let ile_zagadek = document.querySelector('#ile-zag-par').innerText
+
+for(let i=1; i<=ile_zagadek; i++){
+    sessionStorage.setItem(`uz${i}`, "niewyswietlone")
+    sessionStorage.setItem(`z${i}`, 1)
+}
 
 
 document.querySelector('#butt-rozpocznij').addEventListener('click', () => {

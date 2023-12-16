@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="container">
-            <div id="start-panel" style="background-image: url('{{tyt.dokument.url}}'">
+            <div id="start-panel" style="background-image: url('{{tyt.dokument.url}}')">
                 <button style="background: url({{rozp.dokument.url}})" id="butt-rozpocznij"></button>
                 <p id="start-panel-text">{{napis_start}}</p>
                 
@@ -20,6 +20,9 @@
                 </div>
             </div>
         </div>
+
+
+        <p id="ile-zag-par" style="display:hidden">{{ile_zagadek}}</p>
     </body>
     {% csrf_token %}
     <script src="{% static 'js/start.js' %}"></script>

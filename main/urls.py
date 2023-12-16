@@ -8,7 +8,7 @@ from main.views import Main_view_specified
 
 urlpatterns = [
     path('', Main_view.as_view()),
-    re_path(r'^zagadka/(?P<zagnazwa>[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(\d+)?)$',Main_view_specified.as_view()),
+    re_path(r'^zagadka/(?P<zagnazwa>[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9]+)$',Main_view_specified.as_view()),
     path('pobierz_zagadke/', Pobierz_zagadke.as_view()),
     path('pobierz_zagadke/edit', Edytuj_zagadke.as_view()),
     path('pobierz_zagadke/remove', Usun_zagadke.as_view()),

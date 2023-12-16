@@ -1,10 +1,15 @@
-let numer_zagadki = sessionStorage.getItem('nr_zagadki');
+let ile_zagadek = document.querySelector('#ile-zag-par').innerText
 
-let komunikaty = new Array(numer_zagadki);
+let komunikaty = new Array(ile_zagadek);
+let kod='1'
 
-
-for(let i=0;i<numer_zagadki;i++){
-    let kod = sessionStorage.getItem(`z${i+1}`);
+for(let i=0;i<ile_zagadek;i++){
+    if(sessionStorage.getItem(`uz${i+1}`) == "niewyswietlone"){
+        kod = '0'
+    }
+    else{
+        kod = sessionStorage.getItem(`z${i+1}`)
+    }
 
     switch(kod){
         case '1':
@@ -25,10 +30,13 @@ for(let i=0;i<numer_zagadki;i++){
         case '6':
             komunikaty[i] = 'Nie użyłeś/aś żadnej podpowiedzi, ale odsłoniłeś/aś hasło.'
             break;
+        default:
+            komunikaty[i] = 'Nie rozwiązałeś/aś tej zagadki.'
+            break;
     }
 }
 
-for(let i=1;i<=numer_zagadki;i++){
+for(let i=1;i<=ile_zagadek;i++){
 
     let par = document.createElement('p');
     let br = document.createElement('br');

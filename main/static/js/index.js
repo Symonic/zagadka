@@ -10,7 +10,7 @@ async function pobierz_zagadke(){
     if(link_klucz != 'brak'){
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                 let data = { up : link_klucz } 
-                fetch('/pobierz_zagadke/', {
+                await fetch('/pobierz_zagadke/', {
                     method : "POST", 
                     headers: {'X-CSRFToken': csrftoken},
                     mode: 'same-origin',
@@ -31,6 +31,7 @@ async function pobierz_zagadke(){
                     kl_wej = data.klucz_wejsciowy
                     kl_wyj = data.klucz_wynikowy
                     numer_zagadki = data.numer_zag
+                    console.log("laga")
                 })
                 location.replace('/')
     }
@@ -91,6 +92,8 @@ async function pobierz_zagadke(){
     ///
 
         kod_podsumowania = sessionStorage.getItem(`z${numer_zagadki}`);
+        sessionStorage.setItem(`uz${numer_zagadki}`, "wyswietlone")
+        console.log('czy wyswietlone :', sessionStorage.getItem(`uz${numer_zagadki}`))
         console.log('numer_zagadki : '+ numer_zagadki);
         console.log(sessionStorage.getItem(`z${numer_zagadki}`))
         console.log(sessionStorage.getItem('podp1'));
@@ -360,7 +363,7 @@ async function pobierz_zagadke(){
                         sessionStorage.setItem('podp1', 'nieuzyte');
                         sessionStorage.setItem('podp2', 'nieuzyte');
                         sessionStorage.setItem('odp', 'nieuzyte');
-                        numer_zagadki++;
+                        //numer_zagadki++;
                         sessionStorage.setItem('nr_zagadki', numer_zagadki);
                         sessionStorage.setItem(`z${numer_zagadki}`, 1);
                         
