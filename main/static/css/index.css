@@ -317,6 +317,13 @@ body{
     align-items: center;
 }
 
+#start-panel-text{
+    background-color: rgba(54, 54, 46, 0.4);
+    padding:15px;
+    border-radius: 15px;
+    color: rgb(158, 158, 158);
+}
+
 #header-img{
     width: 600px;
     height: 100px;
@@ -710,4 +717,8 @@ hr{
 
 #display-graf-podp1{
     margin-top: 50px;
+}
+
+#par-pyt{
+    color: rgb(158, 158, 158);
 }

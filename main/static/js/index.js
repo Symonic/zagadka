@@ -92,13 +92,13 @@ async function pobierz_zagadke(){
     ///
 
         kod_podsumowania = sessionStorage.getItem(`z${numer_zagadki}`);
-        sessionStorage.setItem(`uz${numer_zagadki}`, "wyswietlone")
         console.log('czy wyswietlone :', sessionStorage.getItem(`uz${numer_zagadki}`))
         console.log('numer_zagadki : '+ numer_zagadki);
         console.log(sessionStorage.getItem(`z${numer_zagadki}`))
         console.log(sessionStorage.getItem('podp1'));
         console.log(sessionStorage.getItem('podp2'));
         console.log(sessionStorage.getItem('odp'));
+        console.log(kod_podsumowania)
 }
     //document.querySelector('#pytanie').innerHTML = zagadka.tresc
     pobierz_zagadke()
@@ -142,18 +142,23 @@ async function pobierz_zagadke(){
             sessionStorage.setItem('podp1', 'uzyte');
             if(kod_podsumowania==1){
                 kod_podsumowania=2;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
             else if(sessionStorage.getItem('podp2') == 'nieuzyte'){
                 kod_podsumowania=2;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
             else if(sessionStorage.getItem('podp2') == 'uzyte'){
                 kod_podsumowania=3;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
             else if(sessionStorage.getItem('podp2') == 'uzyte' && sessionStorage.getItem('odp')=='uzyte'){
                 kod_podsumowania=4;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
             else if(sessionStorage.getItem('podp2') == 'nieuzyte' && sessionStorage.getItem('odp')=='uzyte'){
                 kod_podsumowania=5;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
         })
     })
@@ -195,18 +200,23 @@ async function pobierz_zagadke(){
             sessionStorage.setItem('podp2', 'uzyte');
             if(kod_podsumowania==1){
                 kod_podsumowania=2;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
             else if(sessionStorage.getItem('podp1') == 'nieuzyte'){
                 kod_podsumowania=2;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
             else if(sessionStorage.getItem('podp1') == 'uzyte'){
                 kod_podsumowania=3;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
             else if(sessionStorage.getItem('podp1') == 'uzyte' && sessionStorage.getItem('odp')=='uzyte'){
                 kod_podsumowania=4;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
             else if(sessionStorage.getItem('podp1') == 'nieuzyte' && sessionStorage.getItem('odp')=='uzyte'){
                 kod_podsumowania=5;
+                sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
             }
         })
     })
@@ -264,19 +274,24 @@ async function pobierz_zagadke(){
         
                         sessionStorage.setItem('odp', 'uzyte');
                         if(kod_podsumowania==1){
-                        kod_podsumowania=6;
+                            kod_podsumowania=6;
+                            sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
                         }
                         else if(sessionStorage.getItem('podp1') == 'nieuzyte' && sessionStorage.getItem('podp2') == 'nieuzyte'){
                             kod_podsumowania=6;
+                            sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
                         }
                         else if(sessionStorage.getItem('podp1') == 'uzyte' && sessionStorage.getItem('podp2') == 'nieuzyte'){
                             kod_podsumowania=5;
+                            sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
                         }
                         else if(sessionStorage.getItem('podp1') == 'nieuzyte' && sessionStorage.getItem('podp2') == 'uzyte'){
                             kod_podsumowania=5;
+                            sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
                         }
                         else if(sessionStorage.getItem('podp1') == 'uzyte' && sessionStorage.getItem('podp2')=='uzyte'){
                             kod_podsumowania=4;
+                            sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
                         }
                     }
                     
@@ -297,7 +312,8 @@ async function pobierz_zagadke(){
         console.log(kl_wyj);
         if (wartosc.toLowerCase() == odpowiedz.toLowerCase()){
             console.log("Poprawna odpowiedz");
-
+            sessionStorage.setItem(`z${numer_zagadki}`, kod_podsumowania);
+            sessionStorage.setItem(`uz${numer_zagadki}`, "wyswietlone")
 
 
             ////////// OBSZAR TESTOWY
@@ -365,7 +381,7 @@ async function pobierz_zagadke(){
                         sessionStorage.setItem('odp', 'nieuzyte');
                         //numer_zagadki++;
                         sessionStorage.setItem('nr_zagadki', numer_zagadki);
-                        sessionStorage.setItem(`z${numer_zagadki}`, 1);
+                        sessionStorage.setItem(`z${numer_zagadki+1}`, 1);
                         
                         location.reload();
                     }

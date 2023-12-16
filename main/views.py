@@ -52,23 +52,23 @@ class Main_view(CreateView):
 class Main_view_specified(CreateView):
     def get(self, request, zagnazwa, *args, **kwargs):
 
-        #print(request.session['id_zagadki'])
-        if('id_zagadki' not in request.session ):
-            request.session['id_zagadki'] = 0
-            plik = Plik_graf_tyt.objects.last()
-            plik2 = Plik_rozpocznij.objects.last()
-            plik3 = Plik_submit_kod.objects.last()
-            napis_startowy = Napisy.objects.get(nazwa = "text_start")
-            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start" : napis_startowy.tresc})
+        # #print(request.session['id_zagadki'])
+        # if('id_zagadki' not in request.session ):
+        #     request.session['id_zagadki'] = 0
+        #     plik = Plik_graf_tyt.objects.last()
+        #     plik2 = Plik_rozpocznij.objects.last()
+        #     plik3 = Plik_submit_kod.objects.last()
+        #     napis_startowy = Napisy.objects.get(nazwa = "text_start")
+        #     return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start" : napis_startowy.tresc})
 
-        elif(request.session['id_zagadki'] == 0):
-            plik = Plik_graf_tyt.objects.last()
-            plik2 = Plik_rozpocznij.objects.last()
-            plik3 = Plik_submit_kod.objects.last()
-            napis_startowy = Napisy.objects.get(nazwa = "text_start")
-            return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start": napis_startowy.tresc})
+        # elif(request.session['id_zagadki'] == 0):
+        #     plik = Plik_graf_tyt.objects.last()
+        #     plik2 = Plik_rozpocznij.objects.last()
+        #     plik3 = Plik_submit_kod.objects.last()
+        #     napis_startowy = Napisy.objects.get(nazwa = "text_start")
+        #     return render(request, 'start.html', {"tyt": plik, "rozp": plik2, "submit": plik3, "napis_start": napis_startowy.tresc})
         
-        else:
+        # else:
             plik = Plik_podp1.objects.last()
             plik2 = Plik_podp2.objects.last()
             plik3 = Plik_submit.objects.last()
