@@ -21,3 +21,17 @@ document.querySelector('#butt-zaloguj').addEventListener('click', () => {
     zaloguj()
     
 })
+
+document.querySelector('#haslo').addEventListener('keypress', (event) => {
+    if(event.key === 'Enter'){
+        event.preventDefault();
+        document.querySelector('#butt-zaloguj').click();
+    }
+})
+
+document.querySelector('#login').addEventListener('keypress', (event) => {
+    if(event.key === 'Enter'){
+        event.preventDefault();
+        document.querySelector('#butt-zaloguj').click();
+    }
+})

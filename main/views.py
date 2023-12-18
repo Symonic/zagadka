@@ -373,6 +373,7 @@ class Nowa_Grafika(CreateView):
         if(buttype == "podp1"):
             try:
                 nowy_plik = Plik_podp1(dokument = request.FILES['docfile'])
+                Plik_podp1.objects.all().delete()
                 print(nowy_plik)
                 nowy_plik.save()
                 return HttpResponse(status = 201)
@@ -382,6 +383,7 @@ class Nowa_Grafika(CreateView):
         elif(buttype == "podp2"):
             try:
                 nowy_plik = Plik_podp2(dokument = request.FILES['docfile'])
+                Plik_podp2.objects.all().delete()
                 print(nowy_plik)
                 nowy_plik.save()
                 return HttpResponse(status = 201)
@@ -391,6 +393,7 @@ class Nowa_Grafika(CreateView):
         elif(buttype == "submit"):
             try:
                 nowy_plik = Plik_submit(dokument = request.FILES['docfile'])
+                Plik_submit.objects.all().delete()
                 print(nowy_plik)
                 nowy_plik.save()
                 return HttpResponse(status = 201)
@@ -400,6 +403,7 @@ class Nowa_Grafika(CreateView):
         elif(buttype == "tyt"):
             try:
                 nowy_plik = Plik_graf_tyt(dokument = request.FILES['docfile'])
+                Plik_graf_tyt.objects.all().delete()
                 print(nowy_plik)
                 nowy_plik.save()
                 return HttpResponse(status = 201)
@@ -409,6 +413,7 @@ class Nowa_Grafika(CreateView):
         elif(buttype == "rozp"):
             try:
                 nowy_plik = Plik_rozpocznij(dokument = request.FILES['docfile'])
+                Plik_rozpocznij.objects.all().delete()
                 print(nowy_plik)
                 nowy_plik.save()
                 return HttpResponse(status = 201)
@@ -428,6 +433,7 @@ class Nowa_Grafika(CreateView):
         elif(buttype == "odp"):
             try:
                 nowy_plik = Plik_odp(dokument = request.FILES['docfile'])
+                Plik_odp.objects.all().delete()
                 print(nowy_plik)
                 nowy_plik.save()
                 return HttpResponse(status = 201)
@@ -446,6 +452,7 @@ class Nowa_Grafika(CreateView):
         elif(buttype == 'submitnext'):
             try:
                 nowy_plik = Plik_submit_kod(dokument = request.FILES['docfile'])
+                Plik_submit_kod.objects.all().delete()
                 print(nowy_plik)
                 nowy_plik.save()
                 return HttpResponse(status = 201)
@@ -487,3 +494,8 @@ class Usun_haslo(CreateView):
             return HttpResponse(status = 201)
         except:
             return HttpResponse(status = 409)
+        
+class Przekieruj_glowne(CreateView):
+    def get(self, request, *args, **kwargs):
+        return redirect('/')
+    

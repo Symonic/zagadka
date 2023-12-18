@@ -24,7 +24,7 @@ fileinput.addEventListener('change', () => {
         
         if(height !=66 || width != 150){
             
-            alert(`Niepoprawny wymiar pliku \noczek. wys: 150px\nmax. szer: 66px`);
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 66px\nmax. szer: 150px`);
             fileinput.value = '';
             file = ''
         }
@@ -118,9 +118,9 @@ fileinput5.addEventListener('change', () => {
         let height = this.height;
         let width = this.width;
         
-        if(height != 66 || width != 58){
+        if(height != 66 || width != 150){
             
-            alert(`Niepoprawny wymiar pliku \noczek. wys: 66px\nmax. szer: 58px`);
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 66px\nmax. szer: 150px`);
             fileinput5.value = '';
             file5 = ''
         }
@@ -144,7 +144,7 @@ fileinput6.addEventListener('change', () => {
         
         if(height !=66 || width != 150){
             
-            alert(`Niepoprawny wymiar pliku \noczek. wys: 150px\nmax. szer: 66px`);
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 66px\nmax. szer: 150px`);
             fileinput6.value = '';
             file6 = ''
         }
@@ -168,7 +168,7 @@ fileinput7.addEventListener('change', () => {
         
         if(height !=66 || width != 150){
             
-            alert(`Niepoprawny wymiar pliku \noczek. wys: 150px\nmax. szer: 66px`);
+            alert(`Niepoprawny wymiar pliku \noczek. wys: 66px\nmax. szer: 150px`);
             fileinput7.value = '';
             file7 = ''
         }
@@ -520,7 +520,7 @@ for(button of edit_buttons){
             if(confirm('Czy na pewno chcesz edytować te dane?')){
                 const form = child.children[0]
                 if(form.children[6].value == ''){
-                    form.removeChild(form.children[6])
+                    form.removeChild(form.children[7])
                 }
                 const data = new FormData(form)
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
