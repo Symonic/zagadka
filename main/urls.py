@@ -4,6 +4,7 @@ from main.views import Main_view, Pobierz_zagadke, Logowanie, Administracja
 from main.views import Logout, Nowa_Grafika, Edytuj_zagadke, Usun_zagadke
 from main.views import Utworz_zagadke, Gratulacje, Dodaj_haslo, Usun_haslo, Pobierz_hasla
 from main.views import Main_view_specified, Przekieruj_glowne
+from main.views import get_csrf_token
 #from main.views import Zaktualizuj_numer
 
 urlpatterns = [
@@ -22,5 +23,6 @@ urlpatterns = [
     path('haslo/pobierz/', Pobierz_hasla.as_view()),
     path('haslo/dodaj/', Dodaj_haslo.as_view()),
     path('haslo/usun/', Usun_haslo.as_view()),
-    re_path(r'^(?!media\/|login\/).*$', Przekieruj_glowne.as_view())
+    path('get-csrf-token/', get_csrf_token, name='get_csrf_token'),
+    #re_path(r'^(?!media\/|login\/).*$', Przekieruj_glowne.as_view())
 ]

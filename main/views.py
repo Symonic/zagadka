@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 import json
 from django.core.serializers import serialize
+from django.middleware.csrf import get_token
 
 
 # Funkcje/Zmienne pomocnicze
@@ -305,7 +306,6 @@ class Administracja(CreateView):
         if(request.user.is_authenticated):
             lista_zagadek = Zagadka.objects.all()
             lista_hasel = LosoweHasla.objects.all()
-
             #grafiki do podgladu
             Grafika_tytulowa = Plik_graf_tyt.objects.last()
             Grafika_rozpocznij = Plik_rozpocznij.objects.last()
@@ -499,3 +499,18 @@ class Przekieruj_glowne(CreateView):
     def get(self, request, *args, **kwargs):
         return redirect('/')
     
+
+def get_csrf_token(request):
+    # Pobierz token CSRF
+    csrf_token = get_token(request)
+
+    # Utwórz odpowiedź JSON
+    response_data = {'csrf_token': csrf_token}
+
+    # Ustaw nagłówki CORS
+    response = JsonResponse(response_data)
+    response["Access-Control-Allow-Origin"] = "http://localhost:3000"  # Dostosuj do swojego frontendu
+    response["Access-Control-Allow-Methods"] = "GET"
+    response["Access-Control-Allow-Headers"] = "Content-Type"
+
+    return response

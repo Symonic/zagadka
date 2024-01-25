@@ -136,7 +136,7 @@ async function pobierz_zagadke(){
         document.querySelector('#butt-potw-tak').addEventListener('click', () => {
             body.removeChild(body.lastChild);
             container.classList.toggle('container-darken')
-            document.querySelector(".par-odp").innerHTML = `Podpowiedź: ${odp1}`
+            document.querySelector(".par-odp").innerHTML = `${odp1}`
             document.querySelector(".par-odp").classList.add('par-odp-darken');
             
             sessionStorage.setItem('podp1', 'uzyte');
@@ -194,7 +194,7 @@ async function pobierz_zagadke(){
         document.querySelector('#butt-potw-tak').addEventListener('click', () => {
             body.removeChild(body.lastChild);
             container.classList.toggle('container-darken')
-            document.querySelector(".par-odp").innerHTML = `Podpowiedź: ${odp2}`
+            document.querySelector(".par-odp").innerHTML = `${odp2}`
             document.querySelector(".par-odp").classList.add('par-odp-darken');
         
             sessionStorage.setItem('podp2', 'uzyte');
@@ -269,7 +269,7 @@ async function pobierz_zagadke(){
                         clearInterval(x)
                         body.removeChild(body.lastChild);
                         container.classList.toggle('container-darken')
-                        document.querySelector(".par-odp").innerHTML = `Odpowiedź: ${odpowiedz}`
+                        document.querySelector(".par-odp").innerHTML = `${odpowiedz}`
                         document.querySelector(".par-odp").classList.add('par-odp-darken');
         
                         sessionStorage.setItem('odp', 'uzyte');
