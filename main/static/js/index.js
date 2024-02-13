@@ -18,6 +18,7 @@ async function pobierz_zagadke(){
                 }).then(result => result.json()).then(data => {
                     let pyt = document.createElement('p');
                     pyt.setAttribute('id', 'par-pyt');
+                    console.log(data.tresc)
                     pyt.innerHTML = `${data.tresc}`
                     document.querySelector('#tresc-pytania').appendChild(pyt);
                     let cont = document.querySelector('.container');
@@ -47,7 +48,9 @@ async function pobierz_zagadke(){
             let pyt = document.createElement('p');
             pyt.setAttribute('id', 'par-pyt');
             pyt.innerHTML = `${data.tresc}`
-            document.querySelector('#tresc-pytania').appendChild(pyt);
+            if(data.tresc.length>0){
+                document.querySelector('#tresc-pytania').appendChild(pyt);
+            }
             let cont = document.querySelector('.container');
             cont.style.backgroundImage=`url("/media/${data.grafika}")`;
             //<img src="/media/${data.grafika}" /><br />
@@ -408,7 +411,7 @@ async function pobierz_zagadke(){
             okno_wiadomosci.innerHTML = `
             ${hasla[numer]}
             `
-            okno_wiadomosci.classList.add('par-odp-darken')
+            okno_wiadomosci.classList.add('zla-odp-darken')
         }
     })
 
