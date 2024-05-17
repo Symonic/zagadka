@@ -435,6 +435,7 @@ async function pobierz_zagadke(){
             okno_wiadomosci.innerHTML = `
             ${hasla[numer]}
             `
+            okno_wiadomosci.classList.remove('par-odp-darken')
             okno_wiadomosci.classList.add('zla-odp-darken')
         }
     })
