@@ -235,6 +235,7 @@ body{
     border-radius: 15px;
     max-width: 400px;
     
+    white-space: pre-wrap;
     color: rgb(185, 185, 185);
     padding: 20px;
 }
