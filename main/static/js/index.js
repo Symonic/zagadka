@@ -7,6 +7,30 @@ async function pobierz_zagadke(){
     let link_klucz = document.querySelector('#kod_wejsciowy_par').innerText
     console.log("to jest to: "+link_klucz )
 
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     const input = document.querySelector('#wprowadz');
+    //     const paragraph = document.querySelector('#par-pyt');
+    
+    //     function checkHeight() {
+    //         const paragraphHeight = paragraph.offsetHeight;
+    //         if (paragraphHeight > 63) {
+    //             input.style.position = 'relative';
+    //         } else {
+    //             input.style.position = 'absolute';
+    //         }
+    //     }
+    
+    //     // Sprawdź wysokość początkowo
+    //     checkHeight();
+    
+    //     // Dodaj nasłuchiwacza na zmiany w paragrafie
+    //     const observer = new MutationObserver(checkHeight);
+    //     observer.observe(paragraph, { childList: true, subtree: true, characterData: true });
+    
+    //     // Opcjonalnie, możesz również nasłuchiwać zmiany rozmiaru okna
+    //     window.addEventListener('resize', checkHeight);
+    // });
+
     if(link_klucz != 'brak'){
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                 let data = { up : link_klucz } 
